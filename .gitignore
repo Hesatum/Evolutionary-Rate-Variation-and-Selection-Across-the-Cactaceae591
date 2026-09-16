@@ -1,0 +1,23 @@
+# OS / editor
+.DS_Store
+*.swp
+
+# R
+.Rhistory
+.RData
+.Rproj.user/
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Large data — keep raw reads/full alignments/large CSVs OUT of this repo.
+# Point to SRA/BioProject or an external data archive instead.
+*.fasta
+*.fastq
+*.fastq.gz
+*.bam
+*.sam
+*.csv
+!data/**/*.csv
