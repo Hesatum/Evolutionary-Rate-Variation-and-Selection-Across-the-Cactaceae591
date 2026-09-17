@@ -8,9 +8,11 @@ the four-panel summary figure used in the manuscript: two "regime shift" loci
 one whole-locus acceleration example, and one near-neutral locus shown for
 contrast.
 
-Clade colors follow the Okabe-Ito colorblind-safe palette, matching the one
-defined in phylopv4_linux_filtered.R (`clade_colors`), so this figure is
-visually consistent with every other clade-colored plot in the pipeline.
+Clade colors follow Paul Tol's "bright" qualitative palette — 7 hues, checked
+for deuteranopia/protanopia/tritanopia distinguishability, chosen over the
+Okabe-Ito set used elsewhere in the pipeline for a more saturated, print-ready
+look. The Outgroup (grey, not the object of the study) is drawn first so it
+sits in the bottom z-order layer, underneath every ingroup clade.
 
 Output is written both as a quick-look PNG and as a publication-ready TIFF
 sized and resolved per the Biological Journal of the Linnean Society figure
@@ -30,17 +32,21 @@ DETAIL_DIR = "../csv_filtered/resultados_detalhados"  # adjust if run from elsew
 OUT_PNG = "Figure2_representative_introns_preview.png"
 OUT_TIFF = "Figure2.tif"
 
-# Okabe-Ito colorblind-safe palette — same as clade_colors in phylopv4_linux_filtered.R
+# Paul Tol's "bright" qualitative palette (colorblind-safe, 7 categories).
 CLADE_COLORS = {
-    "A1": "#E69F00",
-    "A2": "#56B4E9",
-    "B": "#009E73",
-    "C": "#F0E442",
-    "D": "#0072B2",
-    "E": "#D55E00",
-    "Outgroup": "#999999",
+    "A1": "#4477AA",  # blue
+    "A2": "#66CCEE",  # cyan
+    "B":  "#228833",  # green
+    "C":  "#CCBB44",  # yellow
+    "D":  "#EE6677",  # red
+    "E":  "#AA3377",  # purple
+    "Outgroup": "#BBBBBB",  # grey — not the object of the study, drawn first (bottom layer)
 }
-CLADE_ORDER = ["A1", "A2", "B", "C", "D", "E", "Outgroup"]
+LEGEND_ORDER = ["A1", "A2", "B", "C", "D", "E", "Outgroup"]
+DRAW_ORDER = ["Outgroup", "A1", "A2", "B", "C", "D", "E"]
+
+POINT_SIZE = 1.8       # scatter marker size in the plot (small — 7 clades overlap a lot)
+LEGEND_MARKERSIZE = 7  # legend marker size in points, independent of POINT_SIZE
 
 SIG_THRESHOLD = 1.3  # phyloP score threshold, P < 0.05
 
@@ -58,11 +64,14 @@ def load_scores(og: str) -> pd.DataFrame:
 
 def draw(ax, og: str, title: str) -> None:
     df = load_scores(og)
-    for clade in CLADE_ORDER:
+    # Draw in DRAW_ORDER (Outgroup first -> bottom z-layer) so the ingroup
+    # clades, which are the actual focus of the study, are never hidden
+    # underneath Outgroup points.
+    for zorder, clade in enumerate(DRAW_ORDER):
         sub = df[df["clade"] == clade].sort_values("coord")
         ax.scatter(
             sub["coord"], sub["score"],
-            s=4, alpha=0.65, linewidths=0,
+            s=POINT_SIZE, alpha=0.65, linewidths=0, zorder=zorder,
             color=CLADE_COLORS[clade], label=clade,
         )
     ax.axhline(0, color="black", lw=0.8)
@@ -84,14 +93,23 @@ def build_figure(width_mm: float = 165, height_mm: float = 135):
     for ax, (og, title) in zip(axes.flat, PANELS):
         draw(ax, og, title)
 
+    # Legend uses its own fixed-size proxy markers (Line2D), independent of
+    # POINT_SIZE, in LEGEND_ORDER regardless of DRAW_ORDER — so shrinking
+    # the on-plot points to fight overplotting never shrinks the legend.
+    from matplotlib.lines import Line2D
+    legend_handles = [
+        Line2D([0], [0], marker="o", linestyle="", color=CLADE_COLORS[c],
+               markersize=LEGEND_MARKERSIZE)
+        for c in LEGEND_ORDER
+    ]
+
     # "center left" anchors the LEGEND'S left edge at bbox_to_anchor's x —
     # the legend body extends further right from there, so this x must
     # leave enough room for its own width or it renders clipped off-canvas.
-    handles, labels = axes.flat[0].get_legend_handles_labels()
     fig.tight_layout(rect=[0, 0, 0.83, 0.95])
     fig.legend(
-        handles, labels, title="Clade", loc="center left",
-        bbox_to_anchor=(0.845, 0.5), markerscale=2.5, fontsize=7,
+        legend_handles, LEGEND_ORDER, title="Clade", loc="center left",
+        bbox_to_anchor=(0.845, 0.5), fontsize=7,
         title_fontsize=8, frameon=False, handletextpad=0.3, labelspacing=0.4,
     )
     fig.suptitle(
