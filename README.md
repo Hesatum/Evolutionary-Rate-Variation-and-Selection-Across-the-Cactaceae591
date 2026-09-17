@@ -77,6 +77,46 @@ to day:
   for every codeml run above: codeml does not re-estimate topology, only
   branch lengths and ω under each model.
 
+## phyloP: model and workflow used in this study
+
+The intron side uses RPhast's `phyloP()` quite differently from how codeml is
+used above — one neutral model is fit once, then every clade is tested
+against it, rather than fitting a fresh model per hypothesis. To keep this
+self-explanatory:
+
+**Neutral model (fit once, shared by every test)**
+- A single background substitution model (GTR, tried at HKY85 → REV → JC69 in
+  that order of preference, first one that fits) is fit on a *concatenated*
+  alignment built from a subset of the introns (the most diverse and the
+  longest ones), not on each intron individually. Every subsequent phyloP
+  call reuses this one fitted model as its null.
+
+**Per-site LRT (`method = "LRT"`, `mode = "CONACC"`)**
+- For each of the 7 clades (A1, A2, B, C, D, E, Outgroup) in turn, phyloP
+  rescales the single branch leading to that clade's ancestor and compares
+  the likelihood against the fixed neutral model — a likelihood-ratio test
+  run independently *per alignment column*, not once per whole intron.
+- The signed score is `-log10(P)`, positive for conservation (slower than
+  neutral) and negative for acceleration (faster than neutral). `|score| >
+  1.3` corresponds to raw `P < 0.05` — this is **not** Benjamini-Hochberg
+  corrected at the site level. The manuscript's actual safeguard against
+  false positives from testing thousands of correlated sites is requiring
+  **sustained blocks** of accelerated sites (Results 3.2), not a per-site FDR
+  — a single accelerated site in isolation is not treated as evidence of
+  anything.
+- `phylopv4_linux_filtered_byfeature.R` explores an alternative: testing each
+  whole intron as one feature (one LRT per intron per clade, via phyloP's
+  `features=` argument) instead of per site, so a locus-level
+  Benjamini-Hochberg correction could be applied without the site-level
+  multiple-testing problem. It was a useful diagnostic — the per-site test
+  has essentially no power to detect conservation column-by-column even
+  where the whole-locus test finds it clearly — but it uses a materially
+  different statistical unit (490 whole-locus tests vs. ~500k per-site
+  tests) and gives very different-looking numbers. **It was not used for any
+  number reported in the manuscript**; it's kept here only so the reasoning
+  behind the per-site + sustained-block approach is reproducible, not just
+  asserted.
+
 ## Status
 
 `01_exon_dNdS/` is done and checked against the manuscript's Methods section
@@ -121,7 +161,8 @@ MACSE v2, IQ-TREE 2.0.7 + ModelFinder Plus, PAML 4.9j (codeml), R + RPhast
 | 2.3 Signatures of selection — site/branch models, BH correction, BEB sites | `01_exon_dNdS/` |
 | Figure 3 (LRT density) | `01_exon_dNdS/figure3_lrt_density.py` |
 | 2.3 Species-tree estimation (IQ-TREE, sensitivity re-estimation) | `03_species_tree/` |
-| 2.3 Evolutionary rates in introns (phyloP/RPhast) | `02_intron_phyloP/` |
+| 2.3 Evolutionary rates in introns (phyloP/RPhast) — see "phyloP: model and workflow" above | `02_intron_phyloP/` |
+| Figure 2 (representative intron profiles) | `02_intron_phyloP/plot_figure2_representative_introns.py` |
 | Table S1 (codeml results), Table S2 (phyloP scores) | `data/` |
 
 ## License
