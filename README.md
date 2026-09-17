@@ -23,7 +23,11 @@ raw sequencing data.
 
 02_intron_phyloP/   Intron evolutionary-rate analysis (RPhast phyloP)
   (add) phylopv4_linux_filtered.R          main pipeline: QC, neutral model, per-site phyloP
-  (add) phylopv4_linux_filtered_byfeature.R  whole-locus (per-feature) phyloP variant
+  (add) phylopv4_linux_filtered_byfeature.R  whole-locus (per-feature) phyloP variant;
+                                             exploratory only — NOT used for the published results
+  plot_figure2_representative_introns.py   builds Figure 2 (4 representative intron profiles)
+                                             from phylopv4_linux_filtered.R's per-site output;
+                                             also exports a submission-ready TIFF (see below)
 
 03_species_tree/    Species-tree estimation
   (add) IQ-TREE commands/partition files (ModelFinder Plus, 1000 UFBoot)
