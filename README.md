@@ -36,6 +36,42 @@ data/                            Small derived tables only (e.g. Table S1/S2 sou
                                   SRA/BioProject instead (see manuscript Table 1).
 ```
 
+## codeml and IQ-TREE: models used in this study
+
+This study uses a subset of what PAML/codeml and IQ-TREE can do. To keep the
+repository self-explanatory for readers who don't work with these tools day
+to day:
+
+**Site models (per-codon selection, tested on the whole tree at once)**
+- `M1a` (nearly neutral) vs. `M2a` (adds a class of codons with ω > 1): a
+  nested comparison, LRT with 2 degrees of freedom.
+- `M7` (β-distributed ω, all values < 1) vs. `M8` (same, plus a class with
+  ω > 1): the same comparison with a continuous null instead of a discrete
+  one, more sensitive to weak signals of positive selection than M2a.
+- Both pairs are run for every exon; a locus counts as under positive
+  selection only when both M2a and M8 reject their null after
+  Benjamini-Hochberg correction (manuscript Table 2). Sites are called
+  positively selected from the Bayes Empirical Bayes (BEB) posterior,
+  threshold Pr(ω > 1) > 0.95.
+
+**Branch model (lineage-specific selection)**
+- `M0` (one ω for the whole tree) vs. a free-ratio `Branch` model where every
+  major *Cereus* clade (A1, A2, B, C, D, E, plus the outgroup) is labeled
+  separately in the tree and gets its own ω. This is not a single
+  foreground-vs-background branch test: all seven clades are marked at once,
+  which is why the LRT has 6 degrees of freedom (7 ω categories minus 1).
+- Branch-site models are supported by codeml and by EasyPAML but are **not**
+  used in this manuscript, so they're outside the scope of this repository.
+
+**IQ-TREE 2 (species tree used as fixed input to every codeml run)**
+- ModelFinder Plus picks the nucleotide substitution model for the
+  concatenated supercontig alignment by BIC, instead of assuming one a
+  priori.
+- 1000 ultrafast bootstrap (UFBoot2) replicates give branch support.
+- The resulting topology is fixed and reused, unmodified, as the tree input
+  for every codeml run above: codeml does not re-estimate topology, only
+  branch lengths and ω under each model.
+
 ## Status
 
 `01_exon_dNdS/` is done and checked against the manuscript's Methods section
