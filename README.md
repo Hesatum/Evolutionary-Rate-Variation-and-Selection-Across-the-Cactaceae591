@@ -25,8 +25,8 @@ raw sequencing data.
   codeml_configs/                  example .ctl files for M0, M1a, M2a, M7, M8, Branch
 
 02_intron_phyloP/                Intron evolutionary-rate analysis (RPhast phyloP)
-  (add) phylopv4_linux_filtered.R    main pipeline: QC, neutral model, per-site phyloP
-  (add) phylopv4_linux_filtered_byfeature.R  whole-locus (per-feature) phyloP variant;
+  phylopv4_linux_filtered.R        main pipeline: QC, neutral model, per-site phyloP
+  phylopv4_linux_filtered_byfeature.R  whole-locus (per-feature) phyloP variant;
                                       exploratory only — NOT used for the published results
   plot_figure2_representative_introns.py   builds Figure 2 (4 representative intron
                                       profiles) from phylopv4_linux_filtered.R's per-site
@@ -39,6 +39,12 @@ raw sequencing data.
 data/                            Small derived tables only (e.g. Table S1/S2 sources).
                                   Do NOT put raw reads or full alignments here — link to
                                   SRA/BioProject instead (see manuscript Table 1).
+  08_statistics_by_gene.csv        phyloP results summarized per intron x clade (70 x 7 =
+                                      490 rows: n_sites, mean_score, %conserved/%accelerated).
+                                      Derived from phylopv4_linux_filtered.R's per-site output
+                                      (06_all_phylop_results.csv, 208 MB, kept out of git —
+                                      this is the small summary, not the full per-site table
+                                      submitted to the journal as Table S2).
 ```
 
 ## codeml and IQ-TREE: models used in this study
@@ -119,13 +125,12 @@ self-explanatory:
 
 ## Status
 
-`01_exon_dNdS/` is done and checked against the manuscript's Methods section
-and figure legends. `03_species_tree/` is still a placeholder. In
-`02_intron_phyloP/`, `plot_figure2_representative_introns.py` (Figure 2) is
-in; the main phyloP pipeline scripts (`phylopv4_linux_filtered.R` and the
-by-feature variant) are on a second machine and haven't been copied in yet —
-`plot_figure2_representative_introns.py` depends on their CSV output
-(`csv_filtered/resultados_detalhados/*_LRT_scores.csv`) to run.
+`01_exon_dNdS/` and `02_intron_phyloP/` are done and checked against the
+manuscript's Methods section and figure legends — only the exon side
+(`01_exon_dNdS/`) was ever on a second machine; the phyloP scripts were run
+locally the whole time. `03_species_tree/` is still a placeholder: the
+IQ-TREE commands and the 568-vs-522-locus sensitivity re-estimation
+(manuscript Discussion, Figure S2) still need to be added.
 
 ### A note on `parse_codeml_results.py`
 
