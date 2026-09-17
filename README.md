@@ -94,11 +94,11 @@ self-explanatory:
 **Per-site LRT (`method = "LRT"`, `mode = "CONACC"`)**
 - For each of the 7 clades (A1, A2, B, C, D, E, Outgroup) in turn, phyloP
   rescales the single branch leading to that clade's ancestor and compares
-  the likelihood against the fixed neutral model — a likelihood-ratio test
+  the likelihood against the fixed neutral model; a likelihood-ratio test
   run independently *per alignment column*, not once per whole intron.
 - The signed score is `-log10(P)`, positive for conservation (slower than
   neutral) and negative for acceleration (faster than neutral). `|score| >
-  1.3` corresponds to raw `P < 0.05` — this is **not** Benjamini-Hochberg
+  1.3` corresponds to raw `P < 0.05`; this is **not** Benjamini-Hochberg
   corrected at the site level. The manuscript's actual safeguard against
   false positives from testing thousands of correlated sites is requiring
   **sustained blocks** of accelerated sites (Results 3.2), not a per-site FDR
@@ -108,7 +108,7 @@ self-explanatory:
   whole intron as one feature (one LRT per intron per clade, via phyloP's
   `features=` argument) instead of per site, so a locus-level
   Benjamini-Hochberg correction could be applied without the site-level
-  multiple-testing problem. It was a useful diagnostic — the per-site test
+  multiple-testing problem. It was a useful diagnostic; the per-site test
   has essentially no power to detect conservation column-by-column even
   where the whole-locus test finds it clearly — but it uses a materially
   different statistical unit (490 whole-locus tests vs. ~500k per-site
