@@ -21,3 +21,4 @@ __pycache__/
 *.sam
 *.csv
 !data/**/*.csv
+!03_species_tree/exclude_lists/*.csv
