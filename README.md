@@ -32,9 +32,12 @@ raw sequencing data.
                                       profiles) from phylopv4_linux_filtered.R's per-site
                                       output; also exports a submission-ready TIFF
 
-03_species_tree/                 Species-tree estimation
-  (add) IQ-TREE commands/partition files (ModelFinder Plus, 1000 UFBoot)
-  (add) sensitivity re-estimation after excluding fast-evolving loci
+03_species_tree/                 Species-tree estimation and sensitivity re-runs
+  build_reduced_supermatrix.py     removes chosen orthogroups from the full supermatrix + partitions
+  run_iqtree.sh                    IQ-TREE 2 command (ModelFinder Plus, 1000 UFBoot)
+  plot_tree.R                      draws a tree in the manuscript's Figure 1/S2 style, single or mirrored
+  taxa_codes.txt                   the 18 final taxa (Table 1), in figure order
+  exclude_lists/                   which orthogroups define each sensitivity tree (see below)
 
 data/                            Small derived tables only (e.g. Table S1/S2 sources).
                                   Do NOT put raw reads or full alignments here — link to
@@ -123,14 +126,47 @@ self-explanatory:
   behind the per-site + sustained-block approach is reproducible, not just
   asserted.
 
+## Sensitivity trees (Figure S2)
+
+`03_species_tree/build_reduced_supermatrix.py` takes the full supermatrix
+and partition file, drops every partition belonging to a chosen list of
+orthogroups, and writes a reduced supermatrix ready for `run_iqtree.sh`.
+Three trees are relevant to this study, run the same way with three
+different `--exclude-list` files:
+
+1. **Exons under positive selection removed** (21 orthogroups, Table 2):
+   `exclude_lists/exons_under_selection_21.csv`.
+2. **Introns with sustained clade-specific acceleration removed** (Table
+   S2): `exclude_lists/introns_accelerated_INCOMPLETE.csv`.
+3. **Both removed together**, the tree actually reported in the manuscript
+   (Robinson-Foulds distance = 0 from the full tree, two branches reaching
+   100% support, Figure S2): run with a list that concatenates 1 and 2.
+
+`exclude_lists/introns_accelerated_INCOMPLETE.csv` only has the 5
+orthogroups named in the manuscript text (OG0068401, OG0081328, OG0078211,
+OG0074859, OG0089281); the Discussion reports 10 introns with sustained
+acceleration in total. Fill in the remaining 5 from Table S2 (the
+orthogroups whose per-site phyloP scores form a sustained accelerated block
+rather than scattered sites, manuscript section 3.2) before regenerating
+trees 2 and 3, and rename the file once it's complete.
+
+Every tree, whichever exclusion list produced it, is plotted the same way:
+
+    Rscript plot_tree.R single <tree.contree> <output_prefix> "<panel title>"
+    Rscript plot_tree.R mirror <full_tree.contree> <reduced_tree.contree> <prefix> "Full" "Reduced"
+
+`plot_tree.R` roots on the *Cipocereus* outgroup, orders tips to match the
+manuscript's Figure 1, and labels clades A1/A2/B/C/D/E/Outgroup; it works on
+any Newick/`.contree` file with the same 18 tips, not just the three trees
+above.
+
 ## Status
 
-`01_exon_dNdS/` and `02_intron_phyloP/` are done and checked against the
-manuscript's Methods section and figure legends — only the exon side
-(`01_exon_dNdS/`) was ever on a second machine; the phyloP scripts were run
-locally the whole time. `03_species_tree/` is still a placeholder: the
-IQ-TREE commands and the 568-vs-522-locus sensitivity re-estimation
-(manuscript Discussion, Figure S2) still need to be added.
+All three folders are populated and checked against the manuscript's Methods
+section and figure legends. The one open item is the intron exclusion list
+above: it only has the 5 orthogroups named in the manuscript text, not all
+10 the Discussion reports, so trees 2 and 3 in "Sensitivity trees" can't be
+regenerated until the rest are pulled from Table S2.
 
 ### A note on `parse_codeml_results.py`
 
