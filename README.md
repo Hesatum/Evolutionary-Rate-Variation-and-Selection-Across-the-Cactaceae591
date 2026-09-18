@@ -138,18 +138,29 @@ different `--exclude-list` files:
 1. **Exons under positive selection removed** (21 orthogroups, Table 2):
    `exclude_lists/exons_under_selection_21.csv`.
 2. **Introns with sustained clade-specific acceleration removed** (Table
-   S2): `exclude_lists/introns_accelerated_INCOMPLETE.csv`.
+   S2): `exclude_lists/introns_accelerated_17.csv`.
 3. **Both removed together**, the tree actually reported in the manuscript
-   (Robinson-Foulds distance = 0 from the full tree, two branches reaching
-   100% support, Figure S2): run with a list that concatenates 1 and 2.
+   (Figure S2): run with a list that concatenates 1 and 2.
 
-`exclude_lists/introns_accelerated_INCOMPLETE.csv` only has the 5
-orthogroups named in the manuscript text (OG0068401, OG0081328, OG0078211,
-OG0074859, OG0089281); the Discussion reports 10 introns with sustained
-acceleration in total. Fill in the remaining 5 from Table S2 (the
-orthogroups whose per-site phyloP scores form a sustained accelerated block
-rather than scattered sites, manuscript section 3.2) before regenerating
-trees 2 and 3, and rename the file once it's complete.
+The intron list has no automated formula behind it — "sustained block vs.
+scattered sites" (manuscript section 3.2) was classified by looking at each
+of the 70 retained introns' per-site phyloP profile. Two automated proxies
+were tried first (longest contiguous accelerated run; overall % of sites
+accelerated) and both failed to recover even the loci already named in the
+manuscript text — e.g. OG0074859 has only 1.4% accelerated sites and never
+ranks in the top 20 by either measure, yet visually shows a short, clean
+accelerated block. This confirms the classification is a qualitative call,
+not a threshold on either statistic.
+
+`exclude_lists/introns_accelerated_17.csv` is the human-verified list (M.
+Vieira da Silva, reviewed against per-locus plots): **17 orthogroups**, not
+the 10 stated in the current manuscript draft — OG0074859 was reconsidered
+and dropped on review, and the borderline cases initially set aside as
+ambiguous were, on reflection, included rather than excluded. **The
+manuscript text (Results 3.2, Discussion, and the 46-partition /
+522-locus arithmetic tied to it) has not been updated to match yet** — this
+is the single open item before the sensitivity analysis and the prose agree
+with each other.
 
 Tree 1 has been run end to end against the real 568-partition supermatrix
 (`trees/exon_selection_removed/`): 534 of 568 partitions kept, 541,816
@@ -157,7 +168,9 @@ sites, IQ-TREE 2.2.2.6, seed 141309. Every node reaches 100% ultrafast
 bootstrap support, including the two clades that sat at 92% and 98% in the
 full tree, and the topology is identical to the full tree (unrooted
 Robinson-Foulds distance = 0, checked with `ape::dist.topo`). Trees 2 and 3
-are not run yet, pending the complete intron list above.
+are not run yet: `supermatrix_full.fasta` and `partitions_full.txt` (the
+568-partition inputs `build_reduced_supermatrix.py` needs) aren't on this
+machine — only the already-reduced 534-partition output of tree 1 is.
 
 Every tree, whichever exclusion list produced it, is plotted the same way:
 
@@ -172,10 +185,11 @@ above.
 ## Status
 
 All three folders are populated and checked against the manuscript's Methods
-section and figure legends. The one open item is the intron exclusion list
-above: it only has the 5 orthogroups named in the manuscript text, not all
-10 the Discussion reports, so trees 2 and 3 in "Sensitivity trees" can't be
-regenerated until the rest are pulled from Table S2.
+section and figure legends. Two open items remain, both in "Sensitivity
+trees" above: the intron exclusion list is finalized at 17 orthogroups
+(not the 10 currently stated in the manuscript — text update pending), and
+trees 2/3 can't be regenerated on this machine until `supermatrix_full.fasta`
+/ `partitions_full.txt` (the 568-partition inputs) are located or copied in.
 
 ### A note on `parse_codeml_results.py`
 
