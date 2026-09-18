@@ -31,6 +31,10 @@ raw sequencing data.
   plot_figure2_representative_introns.py   builds Figure 2 (4 representative intron
                                       profiles) from phylopv4_linux_filtered.R's per-site
                                       output; also exports a submission-ready TIFF
+  plot_individual_intron_profiles.py   same drawing conventions, one full-panel plot per
+                                      orthogroup instead of 4 in a grid; defaults to the 17
+                                      accelerated introns (exclude_lists/introns_accelerated_17.csv)
+  individual_profiles/             its output: 17 PNGs, one per accelerated intron
 
 03_species_tree/                 Species-tree estimation and sensitivity re-runs
   build_reduced_supermatrix.py     removes chosen orthogroups from the full supermatrix + partitions
