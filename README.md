@@ -38,6 +38,7 @@ raw sequencing data.
   plot_tree.R                      draws a tree in the manuscript's Figure 1/S2 style, single or mirrored
   taxa_codes.txt                   the 18 final taxa (Table 1), in figure order
   exclude_lists/                   which orthogroups define each sensitivity tree (see below)
+  trees/exon_selection_removed/    tree 1 output: .contree/.treefile, build log, figure (done)
 
 data/                            Small derived tables only (e.g. Table S1/S2 sources).
                                   Do NOT put raw reads or full alignments here — link to
@@ -149,6 +150,14 @@ acceleration in total. Fill in the remaining 5 from Table S2 (the
 orthogroups whose per-site phyloP scores form a sustained accelerated block
 rather than scattered sites, manuscript section 3.2) before regenerating
 trees 2 and 3, and rename the file once it's complete.
+
+Tree 1 has been run end to end against the real 568-partition supermatrix
+(`trees/exon_selection_removed/`): 534 of 568 partitions kept, 541,816
+sites, IQ-TREE 2.2.2.6, seed 141309. Every node reaches 100% ultrafast
+bootstrap support, including the two clades that sat at 92% and 98% in the
+full tree, and the topology is identical to the full tree (unrooted
+Robinson-Foulds distance = 0, checked with `ape::dist.topo`). Trees 2 and 3
+are not run yet, pending the complete intron list above.
 
 Every tree, whichever exclusion list produced it, is plotted the same way:
 
