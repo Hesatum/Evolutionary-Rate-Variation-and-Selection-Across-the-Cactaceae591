@@ -43,12 +43,14 @@ raw sequencing data.
 data/                            Small derived tables only (e.g. Table S1/S2 sources).
                                   Do NOT put raw reads or full alignments here — link to
                                   SRA/BioProject instead (see manuscript Table 1).
-  08_statistics_by_gene.csv        phyloP results summarized per intron x clade (70 x 7 =
-                                      490 rows: n_sites, mean_score, %conserved/%accelerated).
-                                      Derived from phylopv4_linux_filtered.R's per-site output
-                                      (06_all_phylop_results.csv, 208 MB, kept out of git —
-                                      this is the small summary, not the full per-site table
-                                      submitted to the journal as Table S2).
+  Table_S2_phyloP_results.csv.gz   Table S2: per-site phyloP scores (LRT only, CONACC),
+                                      515,739 rows, English column names, rounded for size.
+                                      2.5 MB gzipped, down from the 208 MB raw pipeline output
+                                      (06_all_phylop_results.csv, both methods + internal
+                                      columns, kept out of git) — see Table_S2_README.txt.
+  Table_S2b_summary_by_orthogroup.csv  same data summarized per intron x clade (490 rows).
+  Table_S2_README.txt              column definitions and thresholds, for co-authors/readers
+                                      who don't want to re-derive them from Methods 2.3.
 ```
 
 ## codeml and IQ-TREE: models used in this study
