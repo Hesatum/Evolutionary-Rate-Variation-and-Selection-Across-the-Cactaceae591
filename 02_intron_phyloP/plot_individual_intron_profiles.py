@@ -63,7 +63,10 @@ def load_scores(detail_dir: str, og: str) -> pd.DataFrame:
 
 def plot_one(detail_dir: str, og: str, out_dir: Path) -> None:
     df = load_scores(detail_dir, og)
-    fig, ax = plt.subplots(figsize=(7.5, 4.2))
+    # Extra width reserved on the right for the legend (fig.legend below),
+    # so it sits beside the plot instead of on top of the data — 'upper
+    # right' inside the axes collided with the conservation cluster near 0.
+    fig, ax = plt.subplots(figsize=(8.5, 4.2))
     for zorder, clade in enumerate(DRAW_ORDER):
         sub = df[df['clade'] == clade].sort_values('coord')
         ax.scatter(sub['coord'], sub['score'], s=POINT_SIZE, alpha=0.65,
@@ -84,10 +87,11 @@ def plot_one(detail_dir: str, og: str, out_dir: Path) -> None:
                markersize=LEGEND_MARKERSIZE)
         for c in LEGEND_ORDER
     ]
-    ax.legend(legend_handles, LEGEND_ORDER, title='Clade', fontsize=7,
-              title_fontsize=8, frameon=False, loc='upper right', ncol=2)
+    fig.tight_layout(rect=[0, 0, 0.83, 1])
+    fig.legend(legend_handles, LEGEND_ORDER, title='Clade', loc='center left',
+               bbox_to_anchor=(0.845, 0.5), fontsize=7, title_fontsize=8,
+               frameon=False, handletextpad=0.3, labelspacing=0.4)
 
-    plt.tight_layout()
     fig.savefig(out_dir / f'{og}_profile_LRT.png', dpi=150)
     plt.close(fig)
 
