@@ -43,6 +43,8 @@ raw sequencing data.
   taxa_codes.txt                   the 18 final taxa (Table 1), in figure order
   exclude_lists/                   which orthogroups define each sensitivity tree (see below)
   trees/exon_selection_removed/    tree 1 output: .contree/.treefile, build log, figure (done)
+  trees/intron_acceleration_removed/  tree 2 output (done)
+  trees/exons_and_introns_removed/    tree 3 output (done)
 
 data/                            Small derived tables only (e.g. Table S1/S2 sources).
                                   Do NOT put raw reads or full alignments here — link to
@@ -168,15 +170,39 @@ manuscript text (Results 3.2, Discussion, and the 46-partition /
 is the single open item before the sensitivity analysis and the prose agree
 with each other.
 
-Tree 1 has been run end to end against the real 568-partition supermatrix
-(`trees/exon_selection_removed/`): 534 of 568 partitions kept, 541,816
-sites, IQ-TREE 2.2.2.6, seed 141309. Every node reaches 100% ultrafast
-bootstrap support, including the two clades that sat at 92% and 98% in the
-full tree, and the topology is identical to the full tree (unrooted
-Robinson-Foulds distance = 0, checked with `ape::dist.topo`). Trees 2 and 3
-are not run yet: `supermatrix_full.fasta` and `partitions_full.txt` (the
-568-partition inputs `build_reduced_supermatrix.py` needs) aren't on this
-machine — only the already-reduced 534-partition output of tree 1 is.
+All three trees have now been run end to end against the real 568-partition
+supermatrix, IQ-TREE 2.2.2.6, seed 141309:
+
+| Tree | Partitions kept | Sites | UFBoot support | RF vs. full tree |
+|---|---|---|---|---|
+| 1. Exons removed (`trees/exon_selection_removed/`) | 534/568 | 541,816 | 100% at every node | 0 |
+| 2. Introns removed (`trees/intron_acceleration_removed/`) | 559/568 | 575,781 | 100% at every node | 0 |
+| 3. Both removed (`trees/exons_and_introns_removed/`) | 525/568 | 532,343 | 100% at every node | 0 |
+
+RF distance is the unrooted Robinson-Foulds distance to the full tree,
+checked with `ape::dist.topo`. Every tree resolves the two clades that sat
+at 92% and 98% support in the full tree up to 100%, matching the
+manuscript's claim for the combined tree, and the topology never changes.
+
+Trees 2 and 3 only remove **9 of the 17** listed intron orthogroups: the
+other 8 (OG0089281, OG0090125, OG0088793, OG0086885, OG0084268, OG0085917,
+OG0089312, OG0056145) don't exist as partitions anywhere in this
+568-partition supermatrix (confirmed by direct grep on `partitions.txt`, not
+a naming mismatch). The species-tree locus set and the 70-orthogroup
+intron/phyloP locus set went through different completeness filters, so
+this is expected rather than a bug, but it does mean trees 2 and 3 are
+milder sensitivity checks than the exclusion-list count alone suggests.
+
+**A rooting artifact, not new to this repo:** `plot_tree.R` roots each
+unrooted IQ-TREE consensus on the *Cipocereus* outgroup with
+`ape::root(..., resolve.root = TRUE)`, which always assigns zero length to
+one of the two branches at the root (it has no basis to split that length
+otherwise). In every tree checked here, including the original published
+tree, that zero-length branch is the one leading to the outgroup clade, so
+the root can look like a trifurcation in the figure even though the
+topology is strictly bifurcating (`ape::is.binary()` is `TRUE`, node count
+is `Ntip - 1`). No fix has been applied; a purely cosmetic minimum root-stub
+length could be added to `plot_tree.R` if the figures need it.
 
 Every tree, whichever exclusion list produced it, is plotted the same way:
 
@@ -191,11 +217,11 @@ above.
 ## Status
 
 All three folders are populated and checked against the manuscript's Methods
-section and figure legends. Two open items remain, both in "Sensitivity
-trees" above: the intron exclusion list is finalized at 17 orthogroups
-(not the 10 currently stated in the manuscript — text update pending), and
-trees 2/3 can't be regenerated on this machine until `supermatrix_full.fasta`
-/ `partitions_full.txt` (the 568-partition inputs) are located or copied in.
+section and figure legends, and all three sensitivity trees have been run
+and confirm the manuscript's claims (100% support everywhere, RF = 0). The
+one open item is that the manuscript text (Results 3.2, Discussion, the
+46-partition/522-locus arithmetic) still says 10 accelerated introns, not
+the 17 the human-verified classification in "Sensitivity trees" settled on.
 
 ### A note on `parse_codeml_results.py`
 
