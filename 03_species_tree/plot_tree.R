@@ -20,6 +20,17 @@
 # collide regardless of how short a given branch is -- the true branch
 # length is still reported as a text label next to each edge.
 #
+# Root stub: an unrooted ML tree carries no information on how to split the
+# length of the branch it gets rooted on, so ape::root(..., resolve.root =
+# TRUE) always assigns zero length to one of the two branches at the root
+# (here, always the one leading to the outgroup clade). Left as-is, that
+# reads as a trifurcation in the plot even though the topology is strictly
+# bifurcating. ROOT_STUB_FRACTION gives that one edge a small, fixed,
+# display-only length (a fraction of tree depth) so the two branches at the
+# root are visually distinguishable; the branch-length text label still
+# reports the true value (0, printed blank, same as before this was added),
+# so no plotted number is altered -- only the line has to move.
+#
 # Usage:
 #   Single tree:  Rscript make_figure1.R single <input.nwk> <output_prefix> "<panel title>"
 #   Mirrored pair: Rscript make_figure1.R mirror <left.nwk> <right.nwk> <output_prefix> "<left title>" "<right title>"
@@ -29,6 +40,11 @@ suppressPackageStartupMessages(library(ape))
 
 args <- commandArgs(trailingOnly = TRUE)
 mode <- args[1]
+
+# Display-only minimum length for a zero-length root branch, as a fraction
+# of tree depth (node.depth.edgelength). Set to 0 to disable and plot the
+# true (zero) length, as before.
+ROOT_STUB_FRACTION <- 0.012
 
 # ---- fixed reference data (Table 1) -----------------------------------------
 outgroup <- c("Cipocereuslaniflorus_S174A6", "Cipocereusminensis_S153A1")
@@ -72,6 +88,19 @@ prepare_tree <- function(tree_file) {
   tr <- root(tr, outgroup = outgroup, resolve.root = TRUE)
   tr <- rotateConstr(tr, constraint = rev(order_species))
   tr$tip.label <- pretty_label(tr$tip.label)
+
+  # Keep the true edge lengths (for the text labels) before stubbing the
+  # zero-length root branch for display only -- see ROOT_STUB_FRACTION above.
+  tr$edge.length.true <- tr$edge.length
+  if (ROOT_STUB_FRACTION > 0) {
+    root_id <- Ntip(tr) + 1
+    root_edges <- which(tr$edge[, 1] == root_id)
+    zero_root_edges <- root_edges[tr$edge.length[root_edges] < 1e-8]
+    if (length(zero_root_edges) > 0) {
+      stub <- ROOT_STUB_FRACTION * max(node.depth.edgelength(tr))
+      tr$edge.length[zero_root_edges] <- stub
+    }
+  }
   tr
 }
 
@@ -86,11 +115,13 @@ draw_tree <- function(tr, direction, panel_title, label_side_pad) {
   par(mar = c(1.2, label_side_pad[1], if (nzchar(panel_title)) 2 else 0.5, label_side_pad[2]),
       family = "Times", xpd = NA)
 
-  # TRUE, proportional branch lengths -- layout and text both use the real
-  # values (no transform). Collisions are avoided purely by giving the plot
-  # a large absolute canvas (see fig_w_in/x.lim below), not by distorting
-  # the tree geometry.
-  bl <- tr$edge.length
+  # Proportional branch lengths -- layout and text both use the real values
+  # (no transform), except the root stub (see ROOT_STUB_FRACTION), where the
+  # plotted line uses the small display-only length but the text label
+  # below still reports the true value. Collisions are avoided purely by
+  # giving the plot a large absolute canvas (see fig_w_in/x.lim below), not
+  # by distorting the tree geometry.
+  bl <- if (!is.null(tr$edge.length.true)) tr$edge.length.true else tr$edge.length
   max_depth <- max(node.depth.edgelength(tr))
 
   plot(tr, direction = direction, show.tip.label = TRUE, font = 3,

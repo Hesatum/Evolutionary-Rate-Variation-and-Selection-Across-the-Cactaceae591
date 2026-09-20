@@ -1,0 +1,14 @@
+Total partitions parsed: 568
+Kept partitions: 559
+Excluded partitions: 9
+  EXCLUDED (OG0066716, intron_acceleration): OG0066716_allintron_paralogs_all.fasta.aligned.fas_trim.fa  [45543-45950]  len=408
+  EXCLUDED (OG0068401, intron_acceleration): OG0068401_allintron_paralogs_all.fasta.aligned.fas_trim.fa  [56867-57973]  len=1107
+  EXCLUDED (OG0078166, intron_acceleration): OG0078166_allintron_paralogs_all.fasta.aligned.fas_trim.fa  [224190-226646]  len=2457
+  EXCLUDED (OG0078211, intron_acceleration): OG0078211_allintron_paralogs_all.fasta.aligned.fas_trim.fa  [229826-230745]  len=920
+  EXCLUDED (OG0081328, intron_acceleration): OG0081328_allintron_paralogs_all.fasta.aligned.fas_trim.fa  [267640-268851]  len=1212
+  EXCLUDED (OG0081675, intron_acceleration): OG0081675_allintron_paralogs_all.fasta.aligned.fas_trim.fa  [273082-274443]  len=1362
+  EXCLUDED (OG0084452, intron_acceleration): OG0084452_allintron_paralogs_all.fasta.aligned.fas_trim.fa  [313642-314187]  len=546
+  EXCLUDED (OG0089249, intron_acceleration): OG0089249_allintron_paralogs_all.fasta.aligned.fas_trim.fa  [510059-510709]  len=651
+  EXCLUDED (OG0094208, intron_acceleration): OG0094208_allintron_paralogs_all.fasta.aligned.fas_trim.fa  [573108-573917]  len=810
+NOTE: these requested orthogroups were not found as partitions: ['OG0089281', 'OG0090125', 'OG0088793', 'OG0086885', 'OG0084268', 'OG0085917', 'OG0089312', 'OG0056145']
+Taxa read from fasta: 49

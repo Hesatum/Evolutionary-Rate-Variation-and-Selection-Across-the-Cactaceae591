@@ -1,0 +1,39 @@
+Total partitions parsed: 568
+Kept partitions: 534
+Excluded partitions: 34
+  EXCLUDED (OG0056812, exon_selection): OG0056812.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [4358-6379]  len=2022
+  EXCLUDED (OG0056812, exon_selection): OG0056812_allexon_paralogs_all.fasta.aligned.fas_trim.fa  [6380-8995]  len=2616
+  EXCLUDED (OG0062209, exon_selection): OG0062209.gene_paralogs_all.fasta.aligned.fas_trim.fa  [19639-20601]  len=963
+  EXCLUDED (OG0062308, exon_selection): OG0062308.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [20602-21666]  len=1065
+  EXCLUDED (OG0062308, exon_selection): OG0062308_gene_paralogs_all.fasta.aligned.fas_trim.fa  [21667-22908]  len=1242
+  EXCLUDED (OG0062743, exon_selection): OG0062743.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [22909-24237]  len=1329
+  EXCLUDED (OG0062743, exon_selection): OG0062743_allexon_paralogs_all.fasta.aligned.fas_trim.fa  [24238-24756]  len=519
+  EXCLUDED (OG0069848, exon_selection): OG0069848.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [84356-84964]  len=609
+  EXCLUDED (OG0069848, exon_selection): OG0069848_gene_paralogs_all.fasta.aligned.fas_trim.fa  [84965-88116]  len=3152
+  EXCLUDED (OG0070800, exon_selection): OG0070800.gene_paralogs_all.fasta.aligned.fas_trim.fa  [94406-97060]  len=2655
+  EXCLUDED (OG0070800, exon_selection): OG0070800.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [97061-98428]  len=1368
+  EXCLUDED (OG0076119, exon_selection): OG0076119.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [156736-158301]  len=1566
+  EXCLUDED (OG0076119, exon_selection): OG0076119_allexon_paralogs_all.fasta.aligned.fas_trim.fa  [158302-159597]  len=1296
+  EXCLUDED (OG0076980, exon_selection): OG0076980.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [182722-182932]  len=211
+  EXCLUDED (OG0077764, exon_selection): OG0077764.gene_paralogs_all.fasta.aligned.fas_trim.fa  [203279-204189]  len=911
+  EXCLUDED (OG0077764, exon_selection): OG0077764.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [204190-205353]  len=1164
+  EXCLUDED (OG0077848, exon_selection): OG0077848.gene_paralogs_all.fasta.aligned.fas_trim.fa  [207097-209301]  len=2205
+  EXCLUDED (OG0077848, exon_selection): OG0077848.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [209302-211710]  len=2409
+  EXCLUDED (OG0083710, exon_selection): OG0083710.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [290592-291449]  len=858
+  EXCLUDED (OG0083710, exon_selection): OG0083710_gene_paralogs_all.fasta.aligned.fas_trim.fa  [291450-291935]  len=486
+  EXCLUDED (OG0084052, exon_selection): OG0084052.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [303521-304552]  len=1032
+  EXCLUDED (OG0084052, exon_selection): OG0084052_allexon_paralogs_all.fasta.aligned.fas_trim.fa  [304553-304990]  len=438
+  EXCLUDED (OG0084473, exon_selection): OG0084473.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [317079-317366]  len=288
+  EXCLUDED (OG0085298, exon_selection): OG0085298.gene_paralogs_all.fasta.aligned.fas_trim.fa  [328906-330789]  len=1884
+  EXCLUDED (OG0087950, exon_selection): OG0087950.gene_paralogs_all.fasta.aligned.fas_trim.fa  [397391-397627]  len=237
+  EXCLUDED (OG0087950, exon_selection): OG0087950.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [397628-398113]  len=486
+  EXCLUDED (OG0088615, exon_selection): OG0088615.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [464039-464629]  len=591
+  EXCLUDED (OG0088615, exon_selection): OG0088615_allexon_paralogs_all.fasta.aligned.fas_trim.fa  [464630-465457]  len=828
+  EXCLUDED (OG0088643, exon_selection): OG0088643.gene_paralogs_all.fasta.aligned.fas_trim.fa  [466592-467200]  len=609
+  EXCLUDED (OG0088643, exon_selection): OG0088643.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [467201-468019]  len=819
+  EXCLUDED (OG0088757, exon_selection): OG0088757.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [468761-470434]  len=1674
+  EXCLUDED (OG0088883, exon_selection): OG0088883.gene_paralogs_all.fasta.aligned.fas_trim.fa  [480543-482384]  len=1842
+  EXCLUDED (OG0088883, exon_selection): OG0088883.onlyexons_paralogs_all.fasta.aligned.fas_trim.fa  [482385-483086]  len=702
+  EXCLUDED (OG0090864, exon_selection): OG0090864_allintron_paralogs_all.fasta.aligned.fas_trim.fa  [526536-529897]  len=3362
+NOTE: these requested orthogroups were not found as partitions: ['OG0062868']
+Taxa read from fasta: 49
