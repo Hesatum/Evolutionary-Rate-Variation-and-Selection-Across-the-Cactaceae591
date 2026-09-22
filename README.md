@@ -1,4 +1,4 @@
-# Cactaceae591 — Selection and Evolutionary-Rate Analysis Scripts
+# Cactaceae591: Selection and Evolutionary-Rate Analysis Scripts
 
 Analysis code for:
 
@@ -27,7 +27,7 @@ raw sequencing data.
 02_intron_phyloP/                Intron evolutionary-rate analysis (RPhast phyloP)
   phylopv4_linux_filtered.R        main pipeline: QC, neutral model, per-site phyloP
   phylopv4_linux_filtered_byfeature.R  whole-locus (per-feature) phyloP variant;
-                                      exploratory only — NOT used for the published results
+                                      exploratory only, NOT used for the published results
   plot_figure2_representative_introns.py   builds Figure 2 (4 representative intron
                                       profiles) from phylopv4_linux_filtered.R's per-site
                                       output; also exports a submission-ready TIFF
@@ -60,19 +60,19 @@ raw sequencing data.
                                       mirror mode on the two pruned_18tax/ trees above
 
 data/                            Small derived tables only (e.g. Table S1/S2 sources).
-                                  Do NOT put raw reads or full alignments here — link to
+                                  Do NOT put raw reads or full alignments here; link to
                                   SRA/BioProject instead (see manuscript Table 1).
   Table_S1_codeml_results.xlsx     Table S1: full site- and branch-model codeml results for
                                       the 94 analyzed exons (one row/exon per comparison
                                       sheet), translated to English and cross-checked against
                                       the manuscript's raw significance counts (25/94, 31/94,
-                                      2/94) — see Table_S1_README.txt.
+                                      2/94); see Table_S1_README.txt.
   Table_S1_README.txt              sheet-by-sheet column definitions for Table S1.
   Table_S2_phyloP_results.csv.gz   Table S2: per-site phyloP scores (LRT only, CONACC),
                                       515,739 rows, English column names, rounded for size.
                                       2.5 MB gzipped, down from the 208 MB raw pipeline output
                                       (06_all_phylop_results.csv, both methods + internal
-                                      columns, kept out of git) — see Table_S2_README.txt.
+                                      columns, kept out of git); see Table_S2_README.txt.
   Table_S2b_summary_by_orthogroup.csv  same data summarized per intron x clade (490 rows).
   Table_S2_README.txt              column definitions and thresholds, for co-authors/readers
                                       who don't want to re-derive them from Methods 2.3.
@@ -117,7 +117,7 @@ to day:
 ## phyloP: model and workflow used in this study
 
 The intron side uses RPhast's `phyloP()` quite differently from how codeml is
-used above — one neutral model is fit once, then every clade is tested
+used above: one neutral model is fit once, then every clade is tested
 against it, rather than fitting a fresh model per hypothesis. To keep this
 self-explanatory:
 
@@ -138,8 +138,8 @@ self-explanatory:
   1.3` corresponds to raw `P < 0.05`; this is **not** Benjamini-Hochberg
   corrected at the site level. The manuscript's actual safeguard against
   false positives from testing thousands of correlated sites is requiring
-  **sustained blocks** of accelerated sites (Results 3.2), not a per-site FDR
-  — a single accelerated site in isolation is not treated as evidence of
+  **sustained blocks** of accelerated sites (Results 3.2), not a per-site FDR.
+  A single accelerated site in isolation is not treated as evidence of
   anything.
 - `phylopv4_linux_filtered_byfeature.R` explores an alternative: testing each
   whole intron as one feature (one LRT per intron per clade, via phyloP's
@@ -147,7 +147,7 @@ self-explanatory:
   Benjamini-Hochberg correction could be applied without the site-level
   multiple-testing problem. It was a useful diagnostic; the per-site test
   has essentially no power to detect conservation column-by-column even
-  where the whole-locus test finds it clearly — but it uses a materially
+  where the whole-locus test finds it clearly, but it uses a materially
   different statistical unit (490 whole-locus tests vs. ~500k per-site
   tests) and gives very different-looking numbers. **It was not used for any
   number reported in the manuscript**; it's kept here only so the reasoning
@@ -169,23 +169,27 @@ different `--exclude-list` files:
 3. **Both removed together**, the tree actually reported in the manuscript
    (Figure S2): run with a list that concatenates 1 and 2.
 
-The intron list has no automated formula behind it — "sustained block vs.
+(`exclude_lists/empty_none.csv` is a header-only, zero-row list: pass it to
+`build_reduced_supermatrix.py` to reproduce the unmodified full dataset
+through the same script, as used for the "no exclusion" control row below.)
+
+The intron list has no automated formula behind it: "sustained block vs.
 scattered sites" (manuscript section 3.2) was classified by looking at each
 of the 70 retained introns' per-site phyloP profile. Two automated proxies
 were tried first (longest contiguous accelerated run; overall % of sites
-accelerated) and both failed to recover even the loci already named in the
-manuscript text — e.g. OG0074859 has only 1.4% accelerated sites and never
-ranks in the top 20 by either measure, yet visually shows a short, clean
-accelerated block. This confirms the classification is a qualitative call,
-not a threshold on either statistic.
+accelerated), and both failed to recover even the loci already named in the
+manuscript text. OG0074859, for example, has only 1.4% accelerated sites
+and never ranks in the top 20 by either measure, yet visually shows a
+short, clean accelerated block. This confirms the classification is a
+qualitative call, not a threshold on either statistic.
 
 `exclude_lists/introns_accelerated_17.csv` is the human-verified list (M.
 Vieira da Silva, reviewed against per-locus plots): **17 orthogroups**, not
-the 10 stated in the current manuscript draft — OG0074859 was reconsidered
+the 10 stated in the current manuscript draft. OG0074859 was reconsidered
 and dropped on review, and the borderline cases initially set aside as
 ambiguous were, on reflection, included rather than excluded. **The
 manuscript text (Results 3.2, Discussion, and the 46-partition /
-522-locus arithmetic tied to it) has not been updated to match yet** — this
+522-locus arithmetic tied to it) has not been updated to match yet.** This
 is the single open item before the sensitivity analysis and the prose agree
 with each other.
 
@@ -333,17 +337,17 @@ MACSE v2, IQ-TREE 2.0.7 + ModelFinder Plus, PAML 4.9j (codeml), R + RPhast
 | Manuscript section | Folder |
 |---|---|
 | 2.2 Data Filtering and Processing (reading-frame validation, Blastx check) | `01_exon_dNdS/` |
-| 2.3 Signatures of selection — site/branch models, BH correction, BEB sites | `01_exon_dNdS/` |
+| 2.3 Signatures of selection: site/branch models, BH correction, BEB sites | `01_exon_dNdS/` |
 | Figure 3 (LRT density) | `01_exon_dNdS/figure3_lrt_density.py` |
 | 2.3 Species-tree estimation (IQ-TREE, sensitivity re-estimation) | `03_species_tree/` |
-| 2.3 Evolutionary rates in introns (phyloP/RPhast) — see "phyloP: model and workflow" above | `02_intron_phyloP/` |
+| 2.3 Evolutionary rates in introns (phyloP/RPhast; see "phyloP: model and workflow" above) | `02_intron_phyloP/` |
 | Figure 2 (representative intron profiles) | `02_intron_phyloP/plot_figure2_representative_introns.py` |
 | Table S1 (codeml results), Table S2 (phyloP scores) | `data/` |
 
 ## License
 
 Code released under the MIT License (see `LICENSE`). This covers the analysis
-scripts only — sequence data are governed by their original NCBI SRA terms.
+scripts only; sequence data are governed by their original NCBI SRA terms.
 
 ## Citation
 

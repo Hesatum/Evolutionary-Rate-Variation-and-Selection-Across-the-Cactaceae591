@@ -4,7 +4,7 @@ plot_figure2_representative_introns.py
 
 Generates Figure 2: per-site phyloP (LRT, CONACC) evolutionary-rate profiles
 for four representative Cereus introns (manuscript Results 3.2 / Figure 2
-legend) — two "regime shift" loci (a near-neutral segment followed by a
+legend): two "regime shift" loci (a near-neutral segment followed by a
 clade-restricted accelerated block), one whole-locus acceleration example,
 and one near-neutral locus shown for contrast.
 
@@ -20,7 +20,7 @@ proxies) so shrinking points to fight overplotting doesn't shrink the key.
 
 The TIFF output is sized/resolved per the Biological Journal of the Linnean
 Society figure guidelines (max published size 168 x 225 mm; TIFF, LZW
-lossless compression to keep the file small — the journal disallows lossy
+lossless compression to keep the file small; the journal disallows lossy
 formats like JPEG, not lossless compression).
 
 Usage
@@ -44,7 +44,7 @@ CLADE_COLORS = {
     'C':  '#CCBB44',  # yellow
     'D':  '#EE6677',  # red
     'E':  '#AA3377',  # purple
-    'Outgroup': '#BBBBBB',  # grey — not the object of the study
+    'Outgroup': '#BBBBBB',  # grey, not the object of the study
 }
 LEGEND_ORDER = ['A1', 'A2', 'B', 'C', 'D', 'E', 'Outgroup']
 DRAW_ORDER = ['Outgroup', 'A1', 'A2', 'B', 'C', 'D', 'E']
@@ -81,7 +81,7 @@ def draw(ax, detail_dir: str, og: str, title: str) -> None:
 
 
 def build_figure(detail_dir: str, width_mm: float, height_mm: float):
-    # BJLS max published figure size is 168 x 225 mm — the legend is reserved
+    # BJLS max published figure size is 168 x 225 mm; the legend is reserved
     # inside that canvas via tight_layout's rect, not added afterwards with
     # bbox_inches='tight' on save, which would silently grow the file past it.
     fig, axes = plt.subplots(2, 2, figsize=(width_mm / 25.4, height_mm / 25.4))
