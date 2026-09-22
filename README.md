@@ -73,7 +73,9 @@ data/                            Small derived tables only (e.g. Table S1/S2 sou
                                       2.5 MB gzipped, down from the 208 MB raw pipeline output
                                       (06_all_phylop_results.csv, both methods + internal
                                       columns, kept out of git); see Table_S2_README.txt.
-  Table_S2b_summary_by_orthogroup.csv  same data summarized per intron x clade (490 rows).
+  Table_S2b_summary_by_orthogroup.xlsx  same data summarized per intron x clade (490 rows);
+                                      .xlsx like Table S1, unlike the per-site file above,
+                                      which stays .csv.gz to fit BJLS's 2 MB recommendation
   Table_S2_README.txt              column definitions and thresholds, for co-authors/readers
                                       who don't want to re-derive them from Methods 2.3.
 ```

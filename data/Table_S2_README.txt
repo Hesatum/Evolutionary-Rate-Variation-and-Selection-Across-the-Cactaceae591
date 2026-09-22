@@ -24,11 +24,21 @@ Table_S2_phyloP_results.csv.gz
     per-site FDR is not the criterion used; sustained blocks of
     accelerated sites are).
 
-Table_S2b_summary_by_orthogroup.csv
+Table_S2b_summary_by_orthogroup.xlsx
     One row per orthogroup x clade (490 rows), summarizing the file above:
     number of sites, mean score, count and percentage of sites reaching
     the conservation/acceleration threshold. Useful for a quick overview
     without loading the full per-site table.
+
+FORMAT NOTE
+-----------
+Table S1 is a single .xlsx workbook; this table is split into two files
+in two different formats, and that is deliberate rather than an
+inconsistency. The per-site table has 515,739 rows: as .xlsx it comes to
+about 12 MB, well past BJLS's 2 MB per-file recommendation, whereas the
+.csv.gz above is 2.5 MB. The 490-row summary has no such problem, so it
+is formatted the same way as Table S1 (bold header row, frozen header,
+auto-sized columns) and saved as .xlsx instead of .csv.
 
 METHOD
 ------
