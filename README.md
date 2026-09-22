@@ -35,6 +35,10 @@ raw sequencing data.
                                       orthogroup instead of 4 in a grid; defaults to the 17
                                       accelerated introns (exclude_lists/introns_accelerated_17.csv)
   individual_profiles/             its output: 17 PNGs, one per accelerated intron
+  build_figure_s1.py                composes individual_profiles/ into the final Figure S1
+                                      (one numbered file, panels A-Q, BJLS-style: <2 MB, see
+                                      https://academic.oup.com/biolinnean/pages/General_Instructions)
+  Figure_S1_accelerated_intron_profiles.png/.pdf   the assembled Figure S1 (done)
 
 03_species_tree/                 Species-tree estimation and sensitivity re-runs
   build_reduced_supermatrix.py     removes chosen orthogroups from the full supermatrix + partitions
@@ -286,10 +290,11 @@ drop-in replacement paragraph.
 
 Table S1 and Table S2 are both in `data/`, in English, with exon/intron
 counts cross-checked against the manuscript's reported numbers (94 exons,
-25/31/2 raw significant; 70 introns). Figure S1 (additional per-site phyloP
-profiles) and Figure S2 (the tree comparison) have their source data and
-plotting scripts in the repository but are not yet assembled into single,
-captioned figure files.
+25/31/2 raw significant; 70 introns). Figure S1 is assembled
+(`02_intron_phyloP/Figure_S1_accelerated_intron_profiles.png`/`.pdf`,
+17 panels, both files under BJLS's 2 MB recommendation). Figure S2 (the
+tree comparison) has its source data and plotting script in the
+repository but is not yet assembled into a single, captioned figure file.
 
 ### A note on `parse_codeml_results.py`
 
