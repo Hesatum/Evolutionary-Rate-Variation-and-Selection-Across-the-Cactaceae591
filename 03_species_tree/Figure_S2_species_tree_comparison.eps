@@ -1,0 +1,787 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%DocumentNeededResources: font Times-Roman
+%%+ font Times-Bold
+%%+ font Times-Italic
+%%+ font Times-BoldItalic
+%%+ font Symbol
+%%Title: R Graphics Output
+%%Creator: R Software
+%%Pages: (atend)
+%%BoundingBox: 0 0 680 425
+%%EndComments
+%%BeginProlog
+/bp  { gs sRGB gs } def
+% begin .ps.prolog
+/gs  { gsave } bind def
+/gr  { grestore } bind def
+/ep  { showpage gr gr } bind def
+/m   { moveto } bind def
+/l  { rlineto } bind def
+/np  { newpath } bind def
+/cp  { closepath } bind def
+/f   { fill } bind def
+/o   { stroke } bind def
+/c   { newpath 0 360 arc } bind def
+/r   { 4 2 roll moveto 1 copy 3 -1 roll exch 0 exch rlineto 0 rlineto -1 mul 0 exch rlineto closepath } bind def
+/p1  { stroke } bind def
+/p2  { gsave bg fill grestore newpath } bind def
+/p3  { gsave bg fill grestore stroke } bind def
+/p6  { gsave bg eofill grestore newpath } bind def
+/p7  { gsave bg eofill grestore stroke } bind def
+/t   { 5 -2 roll moveto gsave rotate
+       1 index stringwidth pop
+       mul neg 0 rmoveto show grestore } bind def
+/ta  { 4 -2 roll moveto gsave rotate show } bind def
+/tb  { 2 -1 roll 0 rmoveto show } bind def
+/cl  { grestore gsave newpath 3 index 3 index moveto 1 index
+       4 -1 roll lineto  exch 1 index lineto lineto
+       closepath clip newpath } bind def
+/rgb { setrgbcolor } bind def
+/s   { scalefont setfont } bind def
+% end   .ps.prolog
+/sRGB { [ /CIEBasedABC
+          << /DecodeLMN
+               [ { dup 0.03928 le
+                        {12.92321 div}
+                        {0.055 add 1.055 div 2.4 exp }
+                     ifelse
+                 } bind dup dup
+               ]
+             /MatrixLMN [0.412457 0.212673 0.019334
+                         0.357576 0.715152 0.119192
+                         0.180437 0.072175 0.950301]
+             /WhitePoint [0.9505 1.0 1.0890]
+           >>
+         ] setcolorspace } bind def
+/srgb { setcolor } bind def
+% begin encoding
+/WinAnsiEncoding [
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quoteright
+ /parenleft /parenright /asterisk /plus /comma /minus /period /slash
+ /zero /one /two /three /four /five /six /seven
+ /eight /nine /colon /semicolon /less /equal /greater /question
+ /at /A /B /C /D /E /F /G
+ /H /I /J /K /L /M /N /O
+ /P /Q /R /S /T /U /V /W
+ /X /Y /Z /bracketleft /backslash /bracketright /asciicircum /underscore
+ /grave /a /b /c /d /e /f /g
+ /h /i /j /k /l /m /n /o
+ /p /q /r /s /t /u /v /w
+ /x /y /z /braceleft /bar /braceright /asciitilde /.notdef
+ /Euro /.notdef /quotesinglbase /florin /quotedblbase /ellipsis /dagger /daggerdbl
+ /circumflex /perthousand /Scaron /guilsinglleft /OE /.notdef /Zcaron /.notdef
+ /.notdef /quoteleft /quoteright /quotedblleft /quotedblright /bullet /endash /emdash
+ /tilde /trademark /scaron /guilsinglright /oe /.notdef /zcaron /Ydieresis
+ /space /exclamdown /cent /sterling /currency /yen /brokenbar /section
+ /dieresis /copyright /ordfeminine /guillemotleft /logicalnot /hyphen /registered /macron
+ /degree /plusminus /twosuperior /threesuperior /acute /mu /paragraph /periodcentered
+ /cedilla /onesuperior /ordmasculine /guillemotright /onequarter /onehalf /threequarters /questiondown
+ /Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla
+ /Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis
+ /Eth /Ntilde /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply
+ /Oslash /Ugrave /Uacute /Ucircumflex /Udieresis /Yacute /Thorn /germandbls
+ /agrave /aacute /acircumflex /atilde /adieresis /aring /ae /ccedilla
+ /egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis
+ /eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide
+ /oslash /ugrave /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis
+]
+ def
+% end encoding
+%%IncludeResource: font Times-Roman
+/Times-Roman findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /Encoding WinAnsiEncoding def
+  currentdict
+  end
+/Font1 exch definefont pop
+%%IncludeResource: font Times-Bold
+/Times-Bold findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /Encoding WinAnsiEncoding def
+  currentdict
+  end
+/Font2 exch definefont pop
+%%IncludeResource: font Times-Italic
+/Times-Italic findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /Encoding WinAnsiEncoding def
+  currentdict
+  end
+/Font3 exch definefont pop
+%%IncludeResource: font Times-BoldItalic
+/Times-BoldItalic findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /Encoding WinAnsiEncoding def
+  currentdict
+  end
+/Font4 exch definefont pop
+%%IncludeResource: font Symbol
+/Symbol findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  currentdict
+  end
+/Font5 exch definefont pop
+%%EndProlog
+%%Page: 1 1
+bp
+0.00 0.00 680.31 425.20 cl
+0 0 0 srgb
+0.83 setlinewidth
+[] 0 setdash
+1 setlinecap
+1 setlinejoin
+10.00 setmiterlimit
+np
+12.23 43.15 m
+1.21 0 l
+o
+np
+13.44 33.29 m
+24.63 0 l
+o
+np
+13.44 53.01 m
+26.51 0 l
+o
+np
+12.23 154.24 m
+21.41 0 l
+o
+np
+33.64 102.32 m
+4.61 0 l
+o
+np
+38.25 82.60 m
+35.89 0 l
+o
+np
+74.14 72.74 m
+18.61 0 l
+o
+np
+74.14 92.46 m
+18.30 0 l
+o
+np
+38.25 122.04 m
+42.92 0 l
+o
+np
+81.17 112.18 m
+25.39 0 l
+o
+np
+81.17 131.90 m
+22.63 0 l
+o
+np
+33.64 206.16 m
+7.21 0 l
+o
+np
+40.85 161.48 m
+35.92 0 l
+o
+np
+76.77 151.62 m
+34.05 0 l
+o
+np
+76.77 171.34 m
+36.80 0 l
+o
+np
+40.85 250.84 m
+12.99 0 l
+o
+np
+53.84 205.85 m
+25.84 0 l
+o
+np
+79.68 191.06 m
+18.37 0 l
+o
+np
+79.68 220.64 m
+20.27 0 l
+o
+np
+99.95 210.78 m
+4.77 0 l
+o
+np
+99.95 230.50 m
+4.87 0 l
+o
+np
+53.84 295.83 m
+7.69 0 l
+o
+np
+61.53 265.02 m
+5.39 0 l
+o
+np
+66.92 250.22 m
+27.12 0 l
+o
+np
+66.92 279.81 m
+18.33 0 l
+o
+np
+85.25 269.95 m
+18.52 0 l
+o
+np
+85.25 289.67 m
+18.09 0 l
+o
+np
+61.53 326.64 m
+5.24 0 l
+o
+np
+66.77 309.39 m
+40.57 0 l
+o
+np
+66.77 343.90 m
+7.99 0 l
+o
+np
+74.76 329.11 m
+30.46 0 l
+o
+np
+74.76 358.69 m
+3.91 0 l
+o
+np
+78.67 348.83 m
+26.45 0 l
+o
+np
+78.67 368.55 m
+30.98 0 l
+o
+np
+12.23 43.15 m
+0 111.09 l
+o
+np
+74.76 329.11 m
+0 29.58 l
+o
+np
+78.67 348.83 m
+0 19.72 l
+o
+np
+66.77 309.39 m
+0 34.51 l
+o
+np
+61.53 265.02 m
+0 61.62 l
+o
+np
+53.84 205.85 m
+0 89.98 l
+o
+np
+40.85 161.48 m
+0 89.36 l
+o
+np
+33.64 102.32 m
+0 103.84 l
+o
+np
+38.25 82.60 m
+0 39.44 l
+o
+np
+74.14 72.74 m
+0 19.72 l
+o
+np
+81.17 112.18 m
+0 19.72 l
+o
+np
+76.77 151.62 m
+0 19.72 l
+o
+np
+79.68 191.06 m
+0 29.58 l
+o
+np
+99.95 210.78 m
+0 19.72 l
+o
+np
+66.92 250.22 m
+0 29.59 l
+o
+np
+85.25 269.95 m
+0 19.72 l
+o
+np
+13.44 33.29 m
+0 19.72 l
+o
+/Font3 findfont 10 s
+108.76 325.78 (Cer) 0 ta
+-0.370 (eus bicolor S102A10) tb gr
+113.20 366.21 (Cer) 0 ta
+-0.370 (eus jamacaru S180V2) tb gr
+108.67 346.44 (Cer) 0 ta
+-0.370 (eus he) tb
+-0.200 (xagonus S155A2) tb gr
+96.30 69.40 (Cer) 0 ta
+-0.370 (eus mir) tb
+-0.150 (abella S162A26) tb gr
+95.99 89.13 (Cer) 0 ta
+-0.370 (eus albicaulis S143F5) tb gr
+110.11 109.79 (Cer) 0 ta
+-0.370 (eus phatnospermus S149V10) tb gr
+107.34 128.57 (Cer) 0 ta
+-0.370 (eus saddianus S103D4) tb gr
+41.61 30.90 (Cipocer) 0 ta
+-0.370 (eus laniflorus S174A6) tb gr
+43.49 50.66 (Cipocer) 0 ta
+-0.370 (eus minensis S153A1) tb gr
+114.37 148.33 (Cer) 0 ta
+-0.370 (eus mortensenii S184A3) tb gr
+117.12 168.94 (Cer) 0 ta
+-0.370 (eus r) tb
+-0.370 (epandus S162V) tb
+-0.600 (A22) tb gr
+108.26 208.43 (Cer) 0 ta
+-0.370 (eus spe) tb
+-0.400 (gazzinii S180A14) tb gr
+108.37 228.15 (Cer) 0 ta
+-0.370 (eus spe) tb
+-0.400 (gazzinii S77A31) tb gr
+101.60 188.71 (Cer) 0 ta
+-0.370 (eus var) tb
+-0.370 (gasianus S184A5) tb gr
+107.32 267.57 (Cer) 0 ta
+-0.370 (eus fernamb) tb
+-0.200 (ucensis S80F9) tb gr
+106.89 287.31 (Cer) 0 ta
+-0.370 (eus sericifer S88F2) tb gr
+97.59 247.82 (Cer) 0 ta
+-0.370 (eus ing) tb
+-0.100 (ens S169A2) tb gr
+110.88 307.00 (Cer) 0 ta
+-0.370 (eus trigonodendr) tb
+-0.450 (on S184A4) tb gr
+/Font2 findfont 13 s
+111.04 406.40 (Full dataset \(568 loci\)) .5 0 t
+/Font1 findfont 7 s
+74.76 347.14 (98) 1.10 0 t
+78.67 361.93 (100) 1.10 0 t
+66.77 329.89 (100) 1.10 0 t
+61.53 299.07 (100) 1.10 0 t
+53.84 254.08 (100) 1.10 0 t
+40.85 209.40 (100) 1.10 0 t
+33.64 157.48 (100) 1.10 0 t
+38.25 105.56 (100) 1.10 0 t
+74.14 85.84 (92) 1.10 0 t
+81.17 125.28 (100) 1.10 0 t
+76.77 164.72 (100) 1.10 0 t
+79.68 209.10 (100) 1.10 0 t
+99.95 223.89 (100) 1.10 0 t
+66.92 268.26 (100) 1.10 0 t
+85.25 283.05 (100) 1.10 0 t
+13.44 46.40 (100) 1.10 0 t
+/Font1 findfont 6 s
+0.3490 0.3490 0.3490 srgb
+25.75 26.54 (0.0051) .5 0 t
+26.69 46.26 (0.0055) .5 0 t
+22.93 147.49 (0.0045) .5 0 t
+35.94 95.56 (0.0010) .5 0 t
+56.20 75.84 (0.0075) .5 0 t
+83.45 65.98 (0.0039) .5 0 t
+83.29 85.70 (0.0038) .5 0 t
+59.71 115.29 (0.0090) .5 0 t
+93.87 105.43 (0.0053) .5 0 t
+92.48 125.15 (0.0047) .5 0 t
+37.24 199.41 (0.0015) .5 0 t
+58.81 154.73 (0.0075) .5 0 t
+93.79 144.87 (0.0071) .5 0 t
+95.17 164.59 (0.0077) .5 0 t
+47.34 244.09 (0.0027) .5 0 t
+66.76 199.10 (0.0054) .5 0 t
+88.86 184.31 (0.0038) .5 0 t
+89.81 213.89 (0.0042) .5 0 t
+102.33 204.03 (0.0010) .5 0 t
+102.39 223.75 (0.0010) .5 0 t
+57.68 289.08 (0.0016) .5 0 t
+64.23 258.26 (0.0011) .5 0 t
+80.48 243.47 (0.0057) .5 0 t
+76.09 273.05 (0.0038) .5 0 t
+94.51 263.19 (0.0039) .5 0 t
+94.30 282.91 (0.0038) .5 0 t
+64.15 319.89 (0.0011) .5 0 t
+87.05 302.64 (0.0085) .5 0 t
+70.77 337.15 (0.0017) .5 0 t
+89.99 322.36 (0.0064) .5 0 t
+76.72 351.94 (0.0008) .5 0 t
+91.90 342.08 (0.0055) .5 0 t
+94.16 361.80 (0.0065) .5 0 t
+/Font2 findfont 9 s
+0 0 0 srgb
+66.77 323.60 (A1) -0.30 0 t
+66.92 261.97 (A2) -0.30 0 t
+79.68 202.81 (B) -0.30 0 t
+76.77 158.44 (E) -0.30 0 t
+81.17 119.00 (C) -0.30 0 t
+74.14 79.55 (D) -0.30 0 t
+24.84 40.11 (Outgr) 0 ta
+-0.162 (oup) tb gr
+0.00 0.00 680.31 425.20 cl
+0 0 0 srgb
+0.83 setlinewidth
+[] 0 setdash
+1 setlinecap
+1 setlinejoin
+10.00 setmiterlimit
+np
+571.81 43.15 m
+-1.22 0 l
+o
+np
+570.59 33.29 m
+-23.63 0 l
+o
+np
+570.59 53.01 m
+-25.63 0 l
+o
+np
+571.81 154.24 m
+-21.44 0 l
+o
+np
+550.37 102.32 m
+-4.69 0 l
+o
+np
+545.68 82.60 m
+-35.57 0 l
+o
+np
+510.11 72.74 m
+-18.09 0 l
+o
+np
+510.11 92.46 m
+-17.29 0 l
+o
+np
+545.68 122.04 m
+-43.55 0 l
+o
+np
+502.13 112.18 m
+-24.09 0 l
+o
+np
+502.13 131.90 m
+-21.40 0 l
+o
+np
+550.37 206.16 m
+-7.48 0 l
+o
+np
+542.89 161.48 m
+-35.89 0 l
+o
+np
+507.00 151.62 m
+-33.28 0 l
+o
+np
+507.00 171.34 m
+-36.54 0 l
+o
+np
+542.89 250.84 m
+-13.16 0 l
+o
+np
+529.73 205.85 m
+-25.44 0 l
+o
+np
+504.29 191.06 m
+-17.71 0 l
+o
+np
+504.29 220.64 m
+-19.74 0 l
+o
+np
+484.55 210.78 m
+-4.80 0 l
+o
+np
+484.55 230.50 m
+-4.42 0 l
+o
+np
+529.73 295.83 m
+-7.57 0 l
+o
+np
+522.16 265.02 m
+-5.33 0 l
+o
+np
+516.83 250.22 m
+-25.98 0 l
+o
+np
+516.83 279.81 m
+-18.19 0 l
+o
+np
+498.64 269.95 m
+-18.25 0 l
+o
+np
+498.64 289.67 m
+-17.24 0 l
+o
+np
+522.16 326.64 m
+-5.22 0 l
+o
+np
+516.94 309.39 m
+-40.10 0 l
+o
+np
+516.94 343.90 m
+-7.84 0 l
+o
+np
+509.10 329.11 m
+-27.70 0 l
+o
+np
+509.10 358.69 m
+-3.92 0 l
+o
+np
+505.18 348.83 m
+-24.75 0 l
+o
+np
+505.18 368.55 m
+-25.12 0 l
+o
+np
+571.81 43.15 m
+0 111.09 l
+o
+np
+509.10 329.11 m
+0 29.58 l
+o
+np
+505.18 348.83 m
+0 19.72 l
+o
+np
+516.94 309.39 m
+0 34.51 l
+o
+np
+522.16 265.02 m
+0 61.62 l
+o
+np
+529.73 205.85 m
+0 89.98 l
+o
+np
+542.89 161.48 m
+0 89.36 l
+o
+np
+550.37 102.32 m
+0 103.84 l
+o
+np
+545.68 82.60 m
+0 39.44 l
+o
+np
+510.11 72.74 m
+0 19.72 l
+o
+np
+502.13 112.18 m
+0 19.72 l
+o
+np
+507.00 151.62 m
+0 19.72 l
+o
+np
+504.29 191.06 m
+0 29.58 l
+o
+np
+484.55 210.78 m
+0 19.72 l
+o
+np
+516.83 250.22 m
+0 29.59 l
+o
+np
+498.64 269.95 m
+0 19.72 l
+o
+np
+570.59 33.29 m
+0 19.72 l
+o
+/Font3 findfont 10 s
+379.52 325.78 (Cer) 0 ta
+-0.370 (eus bicolor S102A10) tb gr
+373.74 366.21 (Cer) 0 ta
+-0.370 (eus jamacaru S180V2) tb gr
+369.68 346.44 (Cer) 0 ta
+-0.370 (eus he) tb
+-0.200 (xagonus S155A2) tb gr
+380.15 69.40 (Cer) 0 ta
+-0.370 (eus mir) tb
+-0.150 (abella S162A26) tb gr
+385.39 89.13 (Cer) 0 ta
+-0.370 (eus albicaulis S143F5) tb gr
+343.94 109.79 (Cer) 0 ta
+-0.370 (eus phatnospermus S149V10) tb gr
+371.08 128.57 (Cer) 0 ta
+-0.370 (eus saddianus S103D4) tb gr
+422.85 30.90 (Cipocer) 0 ta
+-0.370 (eus laniflorus S174A6) tb gr
+424.75 50.66 (Cipocer) 0 ta
+-0.370 (eus minensis S153A1) tb gr
+358.52 148.33 (Cer) 0 ta
+-0.370 (eus mortensenii S184A3) tb gr
+354.15 168.94 (Cer) 0 ta
+-0.370 (eus r) tb
+-0.370 (epandus S162V) tb
+-0.600 (A22) tb gr
+362.31 208.43 (Cer) 0 ta
+-0.370 (eus spe) tb
+-0.400 (gazzinii S180A14) tb gr
+367.69 228.15 (Cer) 0 ta
+-0.370 (eus spe) tb
+-0.400 (gazzinii S77A31) tb gr
+369.71 188.71 (Cer) 0 ta
+-0.370 (eus var) tb
+-0.370 (gasianus S184A5) tb gr
+354.63 267.57 (Cer) 0 ta
+-0.370 (eus fernamb) tb
+-0.200 (ucensis S80F9) tb gr
+385.08 287.31 (Cer) 0 ta
+-0.370 (eus sericifer S88F2) tb gr
+396.75 247.82 (Cer) 0 ta
+-0.370 (eus ing) tb
+-0.100 (ens S169A2) tb gr
+346.07 307.00 (Cer) 0 ta
+-0.370 (eus trigonodendr) tb
+-0.450 (on S184A4) tb gr
+/Font2 findfont 13 s
+484.87 406.40 (21 exons + 17 intr) 0 ta
+-0.234 (ons r) tb
+-0.234 (emo) tb
+-0.130 (v) tb
+-0.130 (ed) tb gr
+/Font1 findfont 7 s
+509.10 347.14 (99) 1.10 0 t
+505.18 361.93 (100) 1.10 0 t
+516.94 329.89 (100) 1.10 0 t
+522.16 299.07 (100) 1.10 0 t
+529.73 254.08 (100) 1.10 0 t
+542.89 209.40 (100) 1.10 0 t
+550.37 157.48 (100) 1.10 0 t
+545.68 105.56 (99) 1.10 0 t
+510.11 85.84 (92) 1.10 0 t
+502.13 125.28 (100) 1.10 0 t
+507.00 164.72 (100) 1.10 0 t
+504.29 209.10 (100) 1.10 0 t
+484.55 223.89 (100) 1.10 0 t
+516.83 268.26 (100) 1.10 0 t
+498.64 283.05 (100) 1.10 0 t
+570.59 46.40 (100) 1.10 0 t
+/Font1 findfont 6 s
+0.3490 0.3490 0.3490 srgb
+558.78 26.54 (0.0050) .5 0 t
+557.78 46.26 (0.0054) .5 0 t
+561.09 147.49 (0.0045) .5 0 t
+548.02 95.56 (0.0010) .5 0 t
+527.90 75.84 (0.0075) .5 0 t
+501.07 65.98 (0.0038) .5 0 t
+501.47 85.70 (0.0037) .5 0 t
+523.90 115.29 (0.0092) .5 0 t
+490.09 105.43 (0.0051) .5 0 t
+491.43 125.15 (0.0045) .5 0 t
+546.63 199.41 (0.0016) .5 0 t
+524.95 154.73 (0.0076) .5 0 t
+490.36 144.87 (0.0070) .5 0 t
+488.73 164.59 (0.0077) .5 0 t
+536.31 244.09 (0.0028) .5 0 t
+517.01 199.10 (0.0054) .5 0 t
+495.44 184.31 (0.0037) .5 0 t
+494.42 213.89 (0.0042) .5 0 t
+482.15 204.03 (0.0010) .5 0 t
+482.34 223.75 (0.0009) .5 0 t
+525.95 289.08 (0.0016) .5 0 t
+519.50 258.26 (0.0011) .5 0 t
+503.84 243.47 (0.0055) .5 0 t
+507.74 273.05 (0.0038) .5 0 t
+489.51 263.19 (0.0039) .5 0 t
+490.02 282.91 (0.0036) .5 0 t
+519.55 319.89 (0.0011) .5 0 t
+496.89 302.64 (0.0085) .5 0 t
+513.02 337.15 (0.0017) .5 0 t
+495.25 322.36 (0.0059) .5 0 t
+507.14 351.94 (0.0008) .5 0 t
+492.81 342.08 (0.0052) .5 0 t
+492.62 361.80 (0.0053) .5 0 t
+/Font2 findfont 9 s
+0 0 0 srgb
+516.94 323.60 (A1) 1.30 0 t
+516.83 261.97 (A2) 1.30 0 t
+504.29 202.81 (B) 1.30 0 t
+507.00 158.44 (E) 1.30 0 t
+502.13 119.00 (C) 1.30 0 t
+510.11 79.55 (D) 1.30 0 t
+521.18 40.11 (Outgr) 0 ta
+-0.162 (oup) tb gr
+ep
+%%Trailer
+%%Pages: 1
+%%EOF

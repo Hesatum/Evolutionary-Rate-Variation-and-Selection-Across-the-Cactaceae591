@@ -56,6 +56,8 @@ raw sequencing data.
   trees/<name>/pruned_18tax/       .../49tax/ pruned to the 18 final taxa -- the correct one
   trees/full_49tax_reference/      the original, unmodified 49-taxon tree and its pruning,
                                       confirming the pruning method reproduces Figure 1 exactly
+  Figure_S2_species_tree_comparison.png/.pdf/.eps   the assembled Figure S2 (done): plot_tree.R
+                                      mirror mode on the two pruned_18tax/ trees above
 
 data/                            Small derived tables only (e.g. Table S1/S2 sources).
                                   Do NOT put raw reads or full alignments here — link to
@@ -290,11 +292,15 @@ drop-in replacement paragraph.
 
 Table S1 and Table S2 are both in `data/`, in English, with exon/intron
 counts cross-checked against the manuscript's reported numbers (94 exons,
-25/31/2 raw significant; 70 introns). Figure S1 is assembled
-(`02_intron_phyloP/Figure_S1_accelerated_intron_profiles.png`/`.pdf`,
-17 panels, both files under BJLS's 2 MB recommendation). Figure S2 (the
-tree comparison) has its source data and plotting script in the
-repository but is not yet assembled into a single, captioned figure file.
+25/31/2 raw significant; 70 introns). Both supplementary figures are
+assembled and under BJLS's 2 MB recommendation:
+`02_intron_phyloP/Figure_S1_accelerated_intron_profiles.png`/`.pdf` (17
+panels) and
+`03_species_tree/Figure_S2_species_tree_comparison.png`/`.pdf`/`.eps`
+(full dataset vs. 21 exons + 17 introns removed, both pruned from the
+49-taxon analysis; same topology and the same support at every node,
+consistent with the corrected Discussion paragraph above rather than the
+manuscript's current text).
 
 ### A note on `parse_codeml_results.py`
 
