@@ -1,4 +1,4 @@
-Table S2 — phyloP evolutionary-rate scores for the 70 analyzed introns
+Table S2 -- phyloP evolutionary-rate scores for the 70 analyzed introns
 ========================================================================
 
 FILES
@@ -21,7 +21,7 @@ Table_S2_phyloP_results.csv.gz
 
     |PhyloP_Score| > 1.3 corresponds to raw P < 0.05 (uncorrected at the
     site level; see manuscript Methods 2.3 and Results 3.2 for why a
-    per-site FDR is not the criterion used — sustained blocks of
+    per-site FDR is not the criterion used; sustained blocks of
     accelerated sites are).
 
 Table_S2b_summary_by_orthogroup.csv

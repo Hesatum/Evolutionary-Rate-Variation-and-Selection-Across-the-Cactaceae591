@@ -4,7 +4,7 @@ plot_individual_intron_profiles.py
 
 Generates one per-site phyloP profile plot per intron (all 7 clades in a
 single panel, method=LRT, mode=CONACC), for every orthogroup listed in an
-exclude-list CSV — by default, the 17 introns with sustained clade-specific
+exclude-list CSV: by default, the 17 introns with sustained clade-specific
 acceleration (03_species_tree/exclude_lists/introns_accelerated_17.csv).
 
 Same drawing conventions as plot_figure2_representative_introns.py (Paul
@@ -29,7 +29,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 
-# Paul Tol's "bright" qualitative palette (colorblind-safe, 7 categories) —
+# Paul Tol's "bright" qualitative palette (colorblind-safe, 7 categories),
 # same as plot_figure2_representative_introns.py.
 CLADE_COLORS = {
     'A1': '#4477AA',  # blue
@@ -38,7 +38,7 @@ CLADE_COLORS = {
     'C':  '#CCBB44',  # yellow
     'D':  '#EE6677',  # red
     'E':  '#AA3377',  # purple
-    'Outgroup': '#BBBBBB',  # grey — not the object of the study
+    'Outgroup': '#BBBBBB',  # grey, not the object of the study
 }
 LEGEND_ORDER = ['A1', 'A2', 'B', 'C', 'D', 'E', 'Outgroup']
 DRAW_ORDER = ['Outgroup', 'A1', 'A2', 'B', 'C', 'D', 'E']
@@ -64,7 +64,7 @@ def load_scores(detail_dir: str, og: str) -> pd.DataFrame:
 def plot_one(detail_dir: str, og: str, out_dir: Path) -> None:
     df = load_scores(detail_dir, og)
     # Extra width reserved on the right for the legend (fig.legend below),
-    # so it sits beside the plot instead of on top of the data — 'upper
+    # so it sits beside the plot instead of on top of the data: 'upper
     # right' inside the axes collided with the conservation cluster near 0.
     fig, ax = plt.subplots(figsize=(8.5, 4.2))
     for zorder, clade in enumerate(DRAW_ORDER):

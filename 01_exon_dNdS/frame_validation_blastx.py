@@ -12,7 +12,7 @@ were excluded as likely pseudogenes.").
 
 Submits one representative sequence per locus (concatenated into a single
 multi-FASTA query file) to the public NCBI blastx CGI, polls until the job
-is ready, and reports the query frame of each locus' best hit — the
+is ready, and reports the query frame of each locus' best hit: the
 homology-based cross-check on top of the internal-stop-codon screen
 (reading_frame_validation.py).
 
