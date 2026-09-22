@@ -354,5 +354,5 @@ scripts only; sequence data are governed by their original NCBI SRA terms.
 ## Citation
 
 If you use these scripts, please cite the manuscript above. A versioned,
-citable release of this repository is archived on Zenodo: **DOI: (add after
-first release)**.
+citable release of this repository is archived on Zenodo:
+[10.5281/zenodo.22888232](https://doi.org/10.5281/zenodo.22888232).
