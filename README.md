@@ -284,15 +284,17 @@ then prune with `prune_to_final_taxa.R`.
 
 All three folders are populated and checked against the manuscript's Methods
 section and figure legends. The manuscript text now says 17 accelerated
-introns throughout, matching this repository.
+introns throughout, matching this repository, and the Discussion's
+sensitivity-tree paragraph has been rewritten to match the numbers in "Two
+different build methods give two different answers" above (topology
+unchanged, branch support unaffected within normal bootstrap variation,
+rather than the earlier, unsupported "reaching 100% support" claim).
 
-One open item remains, in the manuscript text rather than in this
-repository: the Discussion still credits the loci-removed tree with
-resolving the two sub-100%-support branches. Built the way Figure 1 was
-actually built (pruned from the 49-sample analysis, not assembled fresh on
-18 taxa), none of the three sensitivity trees do that; see "Two different
-build methods give two different answers" above for the numbers and a
-drop-in replacement paragraph.
+One open item remains, and it is outside this repository: the manuscript's
+Data Availability section is still blank. It needs a paragraph pointing to
+the NCBI SRA accessions (Table 1) and to this repository's URL for the
+codon alignments and analysis scripts, matching what the Supporting
+Information section already promises (Tables S1-S2, Figures S1-S2).
 
 Table S1 and Table S2 are both in `data/`, in English, with exon/intron
 counts cross-checked against the manuscript's reported numbers (94 exons,
