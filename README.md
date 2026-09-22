@@ -56,6 +56,12 @@ raw sequencing data.
 data/                            Small derived tables only (e.g. Table S1/S2 sources).
                                   Do NOT put raw reads or full alignments here — link to
                                   SRA/BioProject instead (see manuscript Table 1).
+  Table_S1_codeml_results.xlsx     Table S1: full site- and branch-model codeml results for
+                                      the 94 analyzed exons (one row/exon per comparison
+                                      sheet), translated to English and cross-checked against
+                                      the manuscript's raw significance counts (25/94, 31/94,
+                                      2/94) — see Table_S1_README.txt.
+  Table_S1_README.txt              sheet-by-sheet column definitions for Table S1.
   Table_S2_phyloP_results.csv.gz   Table S2: per-site phyloP scores (LRT only, CONACC),
                                       515,739 rows, English column names, rounded for size.
                                       2.5 MB gzipped, down from the 208 MB raw pipeline output
@@ -267,16 +273,23 @@ then prune with `prune_to_final_taxa.R`.
 ## Status
 
 All three folders are populated and checked against the manuscript's Methods
-section and figure legends. Two open items remain, both about the species
-tree, and both need author input rather than more code:
+section and figure legends. The manuscript text now says 17 accelerated
+introns throughout, matching this repository.
 
-1. The manuscript text (Results 3.2, Discussion, the 46-partition/522-locus
-   arithmetic) still says 10 accelerated introns, not the 17 the
-   human-verified classification in "Sensitivity trees" settled on.
-2. Built the way Figure 1 actually was (pruned from the 49-sample analysis,
-   not built fresh on 18 taxa), none of the three sensitivity trees resolve
-   the two sub-100% branches the way the Discussion currently claims. See
-   "Two different build methods give two different answers" above.
+One open item remains, in the manuscript text rather than in this
+repository: the Discussion still credits the loci-removed tree with
+resolving the two sub-100%-support branches. Built the way Figure 1 was
+actually built (pruned from the 49-sample analysis, not assembled fresh on
+18 taxa), none of the three sensitivity trees do that; see "Two different
+build methods give two different answers" above for the numbers and a
+drop-in replacement paragraph.
+
+Table S1 and Table S2 are both in `data/`, in English, with exon/intron
+counts cross-checked against the manuscript's reported numbers (94 exons,
+25/31/2 raw significant; 70 introns). Figure S1 (additional per-site phyloP
+profiles) and Figure S2 (the tree comparison) have their source data and
+plotting scripts in the repository but are not yet assembled into single,
+captioned figure files.
 
 ### A note on `parse_codeml_results.py`
 
