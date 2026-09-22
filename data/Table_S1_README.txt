@@ -4,17 +4,15 @@ Table S1 -- full codeml site- and branch-model results for the 94 analyzed exons
 FILE
 ----
 Table_S1_codeml_results.xlsx
-    One row per exon (94 rows in every comparison sheet), matching the
-    frame-validated set used throughout the manuscript (Methods 2.2-2.3,
-    Results 3.3, Table 2, Figure 3).
+    One row per exon (94 rows in every comparison sheet).
 
 SHEETS
 ------
 Summary
     Genes analyzed, and counts/percentages significant at raw P < 0.05
     and P < 0.01, for each of the four LRT comparisons below. Matches
-    the manuscript's reported raw counts (M1a vs M2a: 25/94; M7 vs M8:
-    31/94; M0 vs Branch: 2/94).
+    the manuscript's reported raw significance counts (M1a vs M2a: 25/94;
+    M7 vs M8: 31/94; M0 vs Branch: 2/94).
 
 M0 vs M1a
     One-ratio model (M0) vs. nearly neutral model (M1a). Not used for a
@@ -37,13 +35,15 @@ M0 vs Branch
     Outgroup) labeled separately. LRT, df = 6 (7 omega categories minus
     1). One exon (OG0070800) has a negative 2-delta-l, an impossible
     value for nested models that signals a codeml optimisation failure;
-    it is flagged in the "Note" column and excluded from Figure 3B's
-    density plot, but kept in this table for completeness.
+    it is excluded from Figure 3B's density plot (see the figure legend)
+    but kept as a row in this table.
 
 Every sheet also carries the functional annotation columns from the
 Cactaceae591 reference panel (Romeiro-Brito et al. 2022): ortholog code,
 Arabidopsis thaliana BLAST hit, PLAZA 5.0 annotation, and putative gene
 function, consistent with Table 2's "Positively selected sites" summary.
+The source data's "Angiosperm-353 loci ID" and "paralogs identification"
+columns are not included here (out of scope for this manuscript).
 
 SIGNIFICANCE COLUMNS
 ---------------------
