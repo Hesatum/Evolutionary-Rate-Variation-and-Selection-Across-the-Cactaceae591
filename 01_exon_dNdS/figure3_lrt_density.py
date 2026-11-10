@@ -11,14 +11,20 @@ One exon has a branch-model 2Δℓ ≈ -49, an impossible value for nested model
 that signals a codeml optimisation failure; it is excluded from the branch
 panel's KDE and count (see Figure 3 legend) but not from the underlying data.
 
+Also generates Figure S3: the same density plot for the site model M7 vs. M8
+(df=2), with each exon's rug tick coloured by significance after
+Benjamini-Hochberg correction (q < 0.05).
+
 Expects an Excel workbook with one sheet per LRT comparison ("M1a vs M2a",
-"M0 vs Branch"), each with a "2Δℓ" column (one row per exon).
+"M7 vs M8", "M0 vs Branch"), each with a "2Δℓ" column and, for M7 vs M8, a
+"p-value" column (one row per exon).
 
 Usage
 -----
     python figure3_lrt_density.py --xlsx resultados_2026_frame_validated.xlsx \
         --site-sheet "M1a vs M2a" --branch-sheet "M0 vs Branch" \
-        --out-prefix Figure3_LRT_density
+        --out-prefix Figure3_LRT_density \
+        --m7m8-sheet "M7 vs M8" --s3-out-prefix Figure_S3_M7_M8_LRT_density
 """
 
 import argparse
@@ -29,6 +35,8 @@ import numpy as np
 import openpyxl
 from matplotlib.ticker import MaxNLocator
 from scipy import stats
+
+from parse_codeml_results import benjamini_hochberg
 
 C_LINE = '#08306b'   # density outline (dark blue)
 C_FILL = '#eef2f7'   # full area (very light)
@@ -49,12 +57,13 @@ def lrt_of(wb, sheet, column):
     return np.array([v for v in col(ws, column) if isinstance(v, (int, float))], float)
 
 
-def panel(ax, data, df, xlim, label, title, show_p01=True):
+def panel(ax, data, df, xlim, label, title, show_p01=True, sig_mask=None, sig_text=None):
     crit05 = stats.chi2.ppf(0.95, df)
     crit01 = stats.chi2.ppf(0.99, df)
     n = data.size
     nsig = int((data > crit05).sum())
-    on = data[(data >= xlim[0]) & (data <= xlim[1])]
+    keep = (data >= xlim[0]) & (data <= xlim[1])
+    on = data[keep]
 
     kde = stats.gaussian_kde(on)
     xs = np.linspace(xlim[0], xlim[1], 600)
@@ -81,12 +90,18 @@ def panel(ax, data, df, xlim, label, title, show_p01=True):
         ax.text(crit01, ymax * 1.02, f'$\\chi^2_{{0.01}}$ = {crit01:.2f}',
                 color=C_CRIT, fontsize=7, ha='center', va='bottom', alpha=0.85)
 
-    sig = on[on > crit05]
-    ns = on[on <= crit05]
+    if sig_mask is None:
+        sig = on[on > crit05]
+        ns = on[on <= crit05]
+    else:
+        sig = on[sig_mask[keep]]
+        ns = on[~sig_mask[keep]]
     ax.plot(ns, np.full_like(ns, y0), '|', color=C_NS, ms=5, mew=0.7, alpha=0.7, zorder=3)
     ax.plot(sig, np.full_like(sig, y0), '|', color=C_SIG, ms=6, mew=1.0, zorder=3)
 
     txt = f'$n$ = {n} exons\n{nsig} significant ($p$ < 0.05)'
+    if sig_text:
+        txt += '\n' + sig_text
     ax.text(0.97, 0.93, txt, transform=ax.transAxes, ha='right', va='top',
             fontsize=7.5, linespacing=1.4,
             bbox=dict(boxstyle='round,pad=0.4', fc='white', ec='#cccccc', lw=0.6))
@@ -108,6 +123,10 @@ def main():
     parser.add_argument("--site-xlim", nargs=2, type=float, default=[-2, 80])
     parser.add_argument("--branch-xlim", nargs=2, type=float, default=[-2, 30])
     parser.add_argument("--out-prefix", default="Figure3_LRT_density")
+    parser.add_argument("--m7m8-sheet", default="M7 vs M8")
+    parser.add_argument("--p-column", default="p-value")
+    parser.add_argument("--m7m8-xlim", nargs=2, type=float, default=[-2, 85])
+    parser.add_argument("--s3-out-prefix", default="Figure_S3_M7_M8_LRT_density")
     args = parser.parse_args()
 
     wb = openpyxl.load_workbook(args.xlsx, data_only=True)
@@ -141,6 +160,23 @@ def main():
     for ext in ('pdf', 'png', 'tif'):
         fig.savefig(f'{args.out_prefix}.{ext}', dpi=600, bbox_inches='tight')
     print(f'saved {args.out_prefix}.pdf / .png / .tif')
+
+    ws = wb[args.m7m8_sheet]
+    m78 = np.array(col(ws, args.lrt_column), float)
+    p78 = np.array(col(ws, args.p_column), float)
+    q78 = np.array(benjamini_hochberg(list(p78)))
+    n_raw, n_bh = int((p78 < 0.05).sum()), int((q78 < 0.05).sum())
+    print(f'M7 vs M8: {m78.size} exons; significant p < 0.05: {n_raw}; after BH q < 0.05: {n_bh}')
+
+    fig, ax = plt.subplots(figsize=(5.3, 3.3))
+    panel(ax, m78, df=2, xlim=tuple(args.m7m8_xlim), label='',
+          title='Site model (M7 vs. M8)', sig_mask=q78 < 0.05,
+          sig_text=f'{n_bh} significant after BH ($q$ < 0.05)')
+    ax.set_xlabel('likelihood-ratio test statistic, 2Δℓ')
+    fig.subplots_adjust(left=0.12, right=0.97, top=0.90, bottom=0.15)
+    for ext in ('pdf', 'png'):
+        fig.savefig(f'{args.s3_out_prefix}.{ext}', dpi=600, bbox_inches='tight')
+    print(f'saved {args.s3_out_prefix}.pdf / .png')
 
 
 if __name__ == '__main__':
