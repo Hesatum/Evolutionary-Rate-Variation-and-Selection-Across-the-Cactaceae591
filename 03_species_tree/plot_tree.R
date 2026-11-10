@@ -92,11 +92,6 @@ prepare_tree <- function(tree_file) {
   tr <- read.tree(tree_file)
   stopifnot(Ntip(tr) == 18)
   tr <- root(tr, outgroup = outgroup, resolve.root = TRUE, edgelabel = TRUE)
-  root_id <- Ntip(tr) + 1
-  kids <- tr$edge[tr$edge[, 1] == root_id, 2]
-  kid_lab <- tr$node.label[kids[kids > Ntip(tr)] - Ntip(tr)]
-  kid_lab <- kid_lab[!is.na(kid_lab) & nzchar(kid_lab)]
-  if (length(kid_lab) == 1) tr$node.label[1] <- kid_lab
   tr <- rotateConstr(tr, constraint = rev(order_species))
   tr$tip.label <- pretty_label(tr$tip.label)
 
@@ -118,13 +113,13 @@ prepare_tree <- function(tree_file) {
 # Draw one tree panel. direction: "rightwards" or "leftwards".
 # Node spacing is EQUAL (use.edge.length = FALSE) so short branches never
 # cause label collisions; true branch lengths are printed as text instead.
-draw_tree <- function(tr, direction, panel_title, label_side_pad, x_lim_mult = 1.95) {
+draw_tree <- function(tr, direction, panel_title, label_side_pad, x_lim_mult = 1.95, xaxs = "r") {
   has_support <- !is.null(tr$node.label) && any(nzchar(tr$node.label))
   node_lab <- if (has_support) tr$node.label else rep(NA, tr$Nnode)
   node_lab[node_lab %in% c("", "Root", "NA")] <- NA
 
   par(mar = c(1.2, label_side_pad[1], if (nzchar(panel_title)) 2 else 0.5, label_side_pad[2]),
-      family = "Times", xpd = NA)
+      family = "Times", xpd = NA, xaxs = xaxs)
 
   # Proportional branch lengths -- layout and text both use the real values
   # (no transform), except the root stub (see ROOT_STUB_FRACTION), where the
@@ -156,11 +151,7 @@ draw_tree <- function(tr, direction, panel_title, label_side_pad, x_lim_mult = 1
 
   # bootstrap support: above the branch, close to the node
   if (has_support) {
-    root_lab <- node_lab[1]; node_lab[1] <- NA
     nodelabels(node_lab, frame = "none", adj = c(1.1, -0.7), cex = 0.62, font = 1)
-    if (!is.na(root_lab))
-      nodelabels(root_lab, Ntip(tr) + 1, frame = "none", cex = 0.62, font = 1,
-                 adj = c(if (direction == "rightwards") 1.25 else -0.25, 0.5))
   }
 
   # branch lengths: below the branch, at the edge midpoint -- blank for
@@ -192,8 +183,8 @@ if (mode == "single") {
   fig_h_in <- mm_to_in(SINGLE_H_MM)
   ps <- SINGLE_POINTSIZE
 
-  plot_it <- function() draw_tree(tr, "rightwards", panel_title, label_side_pad = c(2, 0.3),
-                                  x_lim_mult = NULL)
+  plot_it <- function() draw_tree(tr, "rightwards", panel_title, label_side_pad = c(0.3, 1.2),
+                                  x_lim_mult = NULL, xaxs = "i")
 
   setEPS()
   postscript(paste0(out_prefix, ".eps"), width = fig_w_in, height = fig_h_in,
@@ -225,8 +216,8 @@ if (mode == "single") {
 
   plot_it <- function() {
     par(mfrow = c(1, 2))
-    draw_tree(t_left,  "rightwards", left_title,  label_side_pad = c(2, 8.5))
-    draw_tree(t_right, "leftwards",  right_title, label_side_pad = c(8.5, 2))
+    draw_tree(t_left,  "rightwards", left_title,  label_side_pad = c(0.3, 8.5))
+    draw_tree(t_right, "leftwards",  right_title, label_side_pad = c(8.5, 0.3))
   }
 
   setEPS()
