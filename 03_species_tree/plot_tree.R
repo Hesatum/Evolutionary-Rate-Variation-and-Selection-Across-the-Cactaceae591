@@ -11,7 +11,7 @@
 #         codes in Table 1 (branch lengths required; UFBoot node.labels
 #         optional -- if absent, only branch lengths are drawn).
 # Output: <prefix>.eps  (vector, journal-compliant), <prefix>.pdf (vector
-#         preview), <prefix>.png (raster preview, 600 dpi).
+#         preview), <prefix>.png (raster preview, 800 dpi).
 #
 # Method: R v4.4.1, ape v5.8.1. Tree rooted on the Cipocereus outgroup with
 # ape::root(); tips reordered with ape::rotateConstr() to the clade order
@@ -38,13 +38,19 @@
 
 suppressPackageStartupMessages(library(ape))
 
+if (.Platform$OS.type == "windows") windowsFonts(Times = windowsFont("Times New Roman"))
+
 args <- commandArgs(trailingOnly = TRUE)
 mode <- args[1]
 
 # Display-only minimum length for a zero-length root branch, as a fraction
 # of tree depth (node.depth.edgelength). Set to 0 to disable and plot the
 # true (zero) length, as before.
-ROOT_STUB_FRACTION <- 0.012
+ROOT_STUB_FRACTION <- 0.035
+
+SINGLE_W_MM <- 168; SINGLE_H_MM <- 150; SINGLE_POINTSIZE <- 10
+MIRROR_W_MM <- 168; MIRROR_H_MM <- 140; MIRROR_POINTSIZE <- 8
+PNG_DPI <- 800
 
 # ---- fixed reference data (Table 1) -----------------------------------------
 outgroup <- c("Cipocereuslaniflorus_S174A6", "Cipocereusminensis_S153A1")
@@ -85,7 +91,12 @@ pretty_label <- function(labs) {
 prepare_tree <- function(tree_file) {
   tr <- read.tree(tree_file)
   stopifnot(Ntip(tr) == 18)
-  tr <- root(tr, outgroup = outgroup, resolve.root = TRUE)
+  tr <- root(tr, outgroup = outgroup, resolve.root = TRUE, edgelabel = TRUE)
+  root_id <- Ntip(tr) + 1
+  kids <- tr$edge[tr$edge[, 1] == root_id, 2]
+  kid_lab <- tr$node.label[kids[kids > Ntip(tr)] - Ntip(tr)]
+  kid_lab <- kid_lab[!is.na(kid_lab) & nzchar(kid_lab)]
+  if (length(kid_lab) == 1) tr$node.label[1] <- kid_lab
   tr <- rotateConstr(tr, constraint = rev(order_species))
   tr$tip.label <- pretty_label(tr$tip.label)
 
@@ -107,7 +118,7 @@ prepare_tree <- function(tree_file) {
 # Draw one tree panel. direction: "rightwards" or "leftwards".
 # Node spacing is EQUAL (use.edge.length = FALSE) so short branches never
 # cause label collisions; true branch lengths are printed as text instead.
-draw_tree <- function(tr, direction, panel_title, label_side_pad) {
+draw_tree <- function(tr, direction, panel_title, label_side_pad, x_lim_mult = 1.95) {
   has_support <- !is.null(tr$node.label) && any(nzchar(tr$node.label))
   node_lab <- if (has_support) tr$node.label else rep(NA, tr$Nnode)
   node_lab[node_lab %in% c("", "Root", "NA")] <- NA
@@ -124,14 +135,32 @@ draw_tree <- function(tr, direction, panel_title, label_side_pad) {
   bl <- if (!is.null(tr$edge.length.true)) tr$edge.length.true else tr$edge.length
   max_depth <- max(node.depth.edgelength(tr))
 
+  tip_cex <- 0.82
+  lab_off <- max_depth * 0.035
   plot(tr, direction = direction, show.tip.label = TRUE, font = 3,
-       cex = 0.82, label.offset = max_depth * 0.035, edge.width = 1.1,
-       y.lim = c(0.9, Ntip(tr) + 0.7), x.lim = c(0, max_depth * 1.95))
+       tip.color = "transparent",
+       cex = tip_cex, label.offset = lab_off, edge.width = 1.1,
+       y.lim = c(0.9, Ntip(tr) + 0.7),
+       x.lim = if (is.null(x_lim_mult)) NULL else c(0, max_depth * x_lim_mult))
   if (nzchar(panel_title)) title(main = panel_title, cex.main = 1.05, font.main = 2)
+
+  lp <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+  right <- direction == "rightwards"
+  tip_expr <- as.expression(lapply(tr$tip.label, function(l) {
+    sp <- sub(" [^ ]+$", "", l); code <- sub("^.* ", "", l)
+    bquote(italic(.(sp)) * " " * .(code))
+  }))
+  n <- Ntip(tr)
+  text(lp$xx[1:n] + if (right) lab_off else -lab_off, lp$yy[1:n], tip_expr,
+       adj = c(if (right) 0 else 1, 0.5), cex = tip_cex)
 
   # bootstrap support: above the branch, close to the node
   if (has_support) {
+    root_lab <- node_lab[1]; node_lab[1] <- NA
     nodelabels(node_lab, frame = "none", adj = c(1.1, -0.7), cex = 0.62, font = 1)
+    if (!is.na(root_lab))
+      nodelabels(root_lab, Ntip(tr) + 1, frame = "none", cex = 0.62, font = 1,
+                 adj = c(if (direction == "rightwards") 1.25 else -0.25, 0.5))
   }
 
   # branch lengths: below the branch, at the edge midpoint -- blank for
@@ -159,20 +188,22 @@ if (mode == "single") {
 
   tr <- prepare_tree(tree_file)
 
-  fig_w_in <- mm_to_in(220)   # extra lateral room so labels are never clipped
-  fig_h_in <- mm_to_in(155)
+  fig_w_in <- mm_to_in(SINGLE_W_MM)
+  fig_h_in <- mm_to_in(SINGLE_H_MM)
+  ps <- SINGLE_POINTSIZE
 
-  plot_it <- function() draw_tree(tr, "rightwards", panel_title, label_side_pad = c(0.3, 11))
+  plot_it <- function() draw_tree(tr, "rightwards", panel_title, label_side_pad = c(2, 0.3),
+                                  x_lim_mult = NULL)
 
   setEPS()
   postscript(paste0(out_prefix, ".eps"), width = fig_w_in, height = fig_h_in,
-             family = "Times", horizontal = FALSE, paper = "special")
+             family = "Times", horizontal = FALSE, paper = "special", pointsize = ps)
   plot_it(); dev.off()
 
-  pdf(paste0(out_prefix, ".pdf"), width = fig_w_in, height = fig_h_in, family = "Times")
+  pdf(paste0(out_prefix, ".pdf"), width = fig_w_in, height = fig_h_in, family = "Times", pointsize = ps)
   plot_it(); dev.off()
 
-  png(paste0(out_prefix, ".png"), width = fig_w_in * 600, height = fig_h_in * 600, res = 600)
+  png(paste0(out_prefix, ".png"), width = fig_w_in * PNG_DPI, height = fig_h_in * PNG_DPI, res = PNG_DPI, pointsize = ps)
   plot_it(); dev.off()
 
   cat("Wrote:", paste0(out_prefix, c(".eps", ".pdf", ".png")), "\n")
@@ -188,24 +219,25 @@ if (mode == "single") {
   t_left  <- prepare_tree(left_file)
   t_right <- prepare_tree(right_file)
 
-  fig_w_in <- mm_to_in(240)
-  fig_h_in <- mm_to_in(150)
+  fig_w_in <- mm_to_in(MIRROR_W_MM)
+  fig_h_in <- mm_to_in(MIRROR_H_MM)
+  ps <- MIRROR_POINTSIZE
 
   plot_it <- function() {
     par(mfrow = c(1, 2))
-    draw_tree(t_left,  "rightwards", left_title,  label_side_pad = c(0.3, 8.5))
-    draw_tree(t_right, "leftwards",  right_title, label_side_pad = c(8.5, 0.3))
+    draw_tree(t_left,  "rightwards", left_title,  label_side_pad = c(2, 8.5))
+    draw_tree(t_right, "leftwards",  right_title, label_side_pad = c(8.5, 2))
   }
 
   setEPS()
   postscript(paste0(out_prefix, ".eps"), width = fig_w_in, height = fig_h_in,
-             family = "Times", horizontal = FALSE, paper = "special")
+             family = "Times", horizontal = FALSE, paper = "special", pointsize = ps)
   plot_it(); dev.off()
 
-  pdf(paste0(out_prefix, ".pdf"), width = fig_w_in, height = fig_h_in, family = "Times")
+  pdf(paste0(out_prefix, ".pdf"), width = fig_w_in, height = fig_h_in, family = "Times", pointsize = ps)
   plot_it(); dev.off()
 
-  png(paste0(out_prefix, ".png"), width = fig_w_in * 600, height = fig_h_in * 600, res = 600)
+  png(paste0(out_prefix, ".png"), width = fig_w_in * PNG_DPI, height = fig_h_in * PNG_DPI, res = PNG_DPI, pointsize = ps)
   plot_it(); dev.off()
 
   cat("Wrote:", paste0(out_prefix, c(".eps", ".pdf", ".png")), "\n")
