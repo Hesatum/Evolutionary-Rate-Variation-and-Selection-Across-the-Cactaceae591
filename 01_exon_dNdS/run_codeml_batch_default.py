@@ -4,15 +4,13 @@ run_codeml_batch_default.py
 
 Batch execution of PAML's codeml across a directory of per-locus codon
 alignments, using the default control-file (.ctl) parameters of EasyPAML
-(https://github.com/<user>/EasyPAML) for the site models (M0, M1a, M2a, M7,
+(https://github.com/LAGEVOL/EasyPAML) for the site models (M0, M1a, M2a, M7,
 M8) and the branch model (Branch) used in this study.
 
-This script is a minimal, standalone distillation of the batch/default-ctl
-logic in EasyPAML's `codeml_backend.py` (CodemlBatchAnalysis.MODEL_CONFIGS
-and generate_ctl_content). It is published here only to document how the
-codeml runs reported in the manuscript were parameterized and batched; the
-full EasyPAML application (GUI, LRT/BEB parsing, warm-start heuristics,
-report generation, etc.) is maintained and distributed separately.
+This script reproduces the batch/default-ctl logic of EasyPAML's
+`codeml_backend.py` (CodemlBatchAnalysis.MODEL_CONFIGS and
+generate_ctl_content), documenting how the codeml runs reported in the
+manuscript were parameterized and batched.
 
 Requirements
 ------------
@@ -46,7 +44,7 @@ from pathlib import Path
 
 # ---------------------------------------------------------------------------
 # Default model parameters, exactly as used by EasyPAML for this study.
-# Only the models actually reported in the manuscript are included:
+# Models reported in the manuscript:
 #   - Site models (2.3): M0 (baseline), M1a vs M2a, M7 vs M8
 #   - Branch model (2.3): M0 (null) vs Branch (free omega among clades)
 # ---------------------------------------------------------------------------

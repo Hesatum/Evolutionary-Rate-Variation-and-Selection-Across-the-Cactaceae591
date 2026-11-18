@@ -18,8 +18,8 @@ manuscript Methods 2.3:
 
 Site-parsing regex and lnL/omega extraction follow the same patterns used in
 EasyPAML's SitesParser/CodemlBatchAnalysis (src/backend/sites_parser.py,
-codeml_backend.py); the LRT/FDR aggregation step below is a clean, documented
-reimplementation, since the batch-analysis GUI itself does not compute FDR.
+codeml_backend.py); the LRT/FDR step below is added here because EasyPAML does not
+compute FDR.
 
 Expected input layout (as written by run_codeml_batch_default.py):
     <results_dir>/<locus>/<model>/<locus>_<model>.txt

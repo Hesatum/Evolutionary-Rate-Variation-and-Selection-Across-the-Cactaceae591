@@ -30,22 +30,12 @@ Table_S2b_summary_by_orthogroup.xlsx
     the conservation/acceleration threshold. Useful for a quick overview
     without loading the full per-site table.
 
-FORMAT NOTE
------------
-Table S1 is a single .xlsx workbook; this table is split into two files
-in two different formats, and that is deliberate rather than an
-inconsistency. The per-site table has 515,739 rows: as .xlsx it comes to
-about 12 MB, well past BJLS's 2 MB per-file recommendation, whereas the
-.csv.gz above is 2.5 MB. The 490-row summary has no such problem, so it
-is formatted the same way as Table S1 (bold header row, frozen header,
-auto-sized columns) and saved as .xlsx instead of .csv.
-
 METHOD
 ------
-GTR substitution model (HKY85, chosen automatically; see Methods 2.3),
-fit once on a concatenated alignment of representative introns and reused
-as the neutral background for every clade test. Each clade's ancestral
-branch is tested independently against this fixed neutral model with a
-likelihood-ratio test, per alignment column.
+Neutral model fit once with phyloFit on a concatenated alignment of a
+subset of introns (HKY85, REV or JC69, first that converges; see Methods
+2.3) and reused as the null for every clade test. Each clade's ancestral
+branch is tested against this neutral model with a likelihood-ratio test,
+per alignment column.
 
 Generated from phylopv4_linux_filtered.R.

@@ -1,39 +1,23 @@
 #!/usr/bin/env Rscript
 # ==============================================================================
-# make_figure1.R
+# plot_tree.R
 #
-# Reproducible plotting script for the Cereus/Cipocereus phylogeny (Figure 1
-# of "Evolutionary Rate Variation and Selection Across the Cactaceae591
-# Probe Set"), reused here for the sensitivity trees in Figure S2 (loci
-# under selection removed).
+# Plots the Cereus/Cipocereus phylogeny in the style of Figure 1 (single
+# tree) and Figure S2 (two trees, mirrored).
 #
-# Input:  a rooted or unrooted Newick tree with 18 tips matching the sample
-#         codes in Table 1 (branch lengths required; UFBoot node.labels
-#         optional -- if absent, only branch lengths are drawn).
-# Output: <prefix>.eps  (vector, journal-compliant), <prefix>.pdf (vector
-#         preview), <prefix>.png (raster preview, 800 dpi).
+# Input:  a Newick tree with the 18 tips of Table 1 (branch lengths required;
+#         UFBoot node labels optional).
+# Output: <prefix>.eps (vector), <prefix>.pdf (vector), <prefix>.png (800 dpi).
 #
-# Method: R v4.4.1, ape v5.8.1. Tree rooted on the Cipocereus outgroup with
-# ape::root(); tips reordered with ape::rotateConstr() to the clade order
-# used in the original figure; plotted with ape::plot.phylo() using
-# equal (non-proportional) node spacing so that node/branch labels never
-# collide regardless of how short a given branch is -- the true branch
-# length is still reported as a text label next to each edge.
-#
-# Root stub: an unrooted ML tree carries no information on how to split the
-# length of the branch it gets rooted on, so ape::root(..., resolve.root =
-# TRUE) always assigns zero length to one of the two branches at the root
-# (here, always the one leading to the outgroup clade). Left as-is, that
-# reads as a trifurcation in the plot even though the topology is strictly
-# bifurcating. ROOT_STUB_FRACTION gives that one edge a small, fixed,
-# display-only length (a fraction of tree depth) so the two branches at the
-# root are visually distinguishable; the branch-length text label still
-# reports the true value (0, printed blank, same as before this was added),
-# so no plotted number is altered -- only the line has to move.
+# R v4.4.1, ape v5.8.1. The tree is rooted on the Cipocereus outgroup with
+# ape::root() and tips are ordered with ape::rotateConstr(). The support of
+# the root bipartition is shown on both descendants of the root. The
+# zero-length outgroup branch at the root is drawn with a short display-only
+# length (ROOT_STUB_FRACTION); its branch-length label is left blank.
 #
 # Usage:
-#   Single tree:  Rscript make_figure1.R single <input.nwk> <output_prefix> "<panel title>"
-#   Mirrored pair: Rscript make_figure1.R mirror <left.nwk> <right.nwk> <output_prefix> "<left title>" "<right title>"
+#   Single tree:   Rscript plot_tree.R single <input.nwk> <output_prefix> "<panel title>"
+#   Mirrored pair: Rscript plot_tree.R mirror <left.nwk> <right.nwk> <output_prefix> "<left title>" "<right title>"
 # ==============================================================================
 
 suppressPackageStartupMessages(library(ape))
@@ -43,9 +27,8 @@ if (.Platform$OS.type == "windows") windowsFonts(Times = windowsFont("Times New 
 args <- commandArgs(trailingOnly = TRUE)
 mode <- args[1]
 
-# Display-only minimum length for a zero-length root branch, as a fraction
-# of tree depth (node.depth.edgelength). Set to 0 to disable and plot the
-# true (zero) length, as before.
+# Display-only length for the zero-length root branch, as a fraction of
+# tree depth. 0 draws the true length.
 ROOT_STUB_FRACTION <- 0.035
 
 SINGLE_W_MM <- 168; SINGLE_H_MM <- 150; SINGLE_POINTSIZE <- 10
@@ -102,8 +85,7 @@ prepare_tree <- function(tree_file) {
   tr <- rotateConstr(tr, constraint = rev(order_species))
   tr$tip.label <- pretty_label(tr$tip.label)
 
-  # Keep the true edge lengths (for the text labels) before stubbing the
-  # zero-length root branch for display only -- see ROOT_STUB_FRACTION above.
+  # True edge lengths are kept for the branch-length labels.
   tr$edge.length.true <- tr$edge.length
   if (ROOT_STUB_FRACTION > 0) {
     root_id <- Ntip(tr) + 1
@@ -118,8 +100,6 @@ prepare_tree <- function(tree_file) {
 }
 
 # Draw one tree panel. direction: "rightwards" or "leftwards".
-# Node spacing is EQUAL (use.edge.length = FALSE) so short branches never
-# cause label collisions; true branch lengths are printed as text instead.
 draw_tree <- function(tr, direction, panel_title, label_side_pad, x_lim_mult = 1.95, xaxs = "r") {
   has_support <- !is.null(tr$node.label) && any(nzchar(tr$node.label))
   node_lab <- if (has_support) tr$node.label else rep(NA, tr$Nnode)
@@ -128,12 +108,6 @@ draw_tree <- function(tr, direction, panel_title, label_side_pad, x_lim_mult = 1
   par(mar = c(1.2, label_side_pad[1], if (nzchar(panel_title)) 2 else 0.5, label_side_pad[2]),
       family = "Times", xpd = NA, xaxs = xaxs)
 
-  # Proportional branch lengths -- layout and text both use the real values
-  # (no transform), except the root stub (see ROOT_STUB_FRACTION), where the
-  # plotted line uses the small display-only length but the text label
-  # below still reports the true value. Collisions are avoided purely by
-  # giving the plot a large absolute canvas (see fig_w_in/x.lim below), not
-  # by distorting the tree geometry.
   bl <- if (!is.null(tr$edge.length.true)) tr$edge.length.true else tr$edge.length
   max_depth <- max(node.depth.edgelength(tr))
 
@@ -161,8 +135,7 @@ draw_tree <- function(tr, direction, panel_title, label_side_pad, x_lim_mult = 1
     nodelabels(node_lab, frame = "none", adj = c(1.1, -0.7), cex = 0.62, font = 1)
   }
 
-  # branch lengths: below the branch, at the edge midpoint -- blank for
-  # zero-length (artificial root) edges so no "0.0000" is printed
+  # branch lengths: below the branch, blank for zero-length edges
   bl_txt <- ifelse(is.na(bl) | bl < 1e-6, "", sprintf("%.4f", bl))
   edgelabels(bl_txt, frame = "none", adj = c(0.5, 1.7), cex = 0.5, col = "grey35")
 

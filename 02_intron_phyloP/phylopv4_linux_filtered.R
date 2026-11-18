@@ -1,9 +1,8 @@
 # ===============================================================================
 #   ANALISE PHYLOP PARA INTRONS DE CEREUS
 #
-#   Pipeline completo de analise filogenomica usando PhyloP
-#   Detecta selecao positiva/negativa em diferentes linhagens
-#   (adaptado para rodar em Linux, caminhos locais desta maquina)
+#   Pipeline de analise de taxas evolutivas em introns usando PhyloP
+#   (RPhast), por clado
 # ===============================================================================
 
 library(ape)
@@ -16,7 +15,7 @@ library(tidyr)
 library(viridis)
 
 # Configuracao dos diretorios
-base_dir   <- "/home/user/Desktop/projetos/phast_rerun"
+base_dir   <- "."
 tree_file  <- file.path(base_dir, "filtered_tree.newick")
 intron_dir <- file.path(base_dir, "introns/")
 plot_dir   <- file.path(base_dir, "plots_filtered/")

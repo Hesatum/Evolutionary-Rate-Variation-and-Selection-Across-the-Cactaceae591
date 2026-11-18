@@ -8,10 +8,8 @@ exclude-list CSV: by default, the 17 introns with sustained clade-specific
 acceleration (03_species_tree/exclude_lists/introns_accelerated_17.csv).
 
 Same drawing conventions as plot_figure2_representative_introns.py (Paul
-Tol's "bright" colorblind-safe palette, Outgroup drawn first/bottom z-order
-since it isn't the object of the study, |score| > 1.3 significance lines),
-factored out here so a single-panel version doesn't drift from the Figure 2
-four-panel version.
+Tol's "bright" colorblind-safe palette, outgroup drawn first, |score| > 1.3
+significance lines).
 
 Usage
 -----
@@ -63,9 +61,6 @@ def load_scores(detail_dir: str, og: str) -> pd.DataFrame:
 
 def plot_one(detail_dir: str, og: str, out_dir: Path) -> None:
     df = load_scores(detail_dir, og)
-    # Extra width reserved on the right for the legend (fig.legend below),
-    # so it sits beside the plot instead of on top of the data: 'upper
-    # right' inside the axes collided with the conservation cluster near 0.
     fig, ax = plt.subplots(figsize=(8.5, 4.2))
     for zorder, clade in enumerate(DRAW_ORDER):
         sub = df[df['clade'] == clade].sort_values('coord')

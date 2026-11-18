@@ -1,17 +1,9 @@
 # ===============================================================================
-#   PHYLOP POR FEATURE (elemento completo) - metodo nativo/recomendado do rphast
+#   PHYLOP POR FEATURE (intron completo)
 #
-#   Em vez de rodar phyloP() sitio-a-sitio (basewise, o que gera 1 p-valor por
-#   coluna do alinhamento e obriga a lidar com autocorrelacao espacial na hora
-#   de corrigir por multiplos testes), usamos o argumento "features" do proprio
-#   phyloP() (ver rphast-manual.pdf, pag. 80-81) para testar o intron INTEIRO
-#   como um unico elemento por clado. Isso e o que a documentacao do pacote
-#   descreve como o uso pretendido para testar elementos (genes, exons, UTRs,
-#   ou aqui, introns completos) em vez de posicoes individuais.
-#
-#   Reusa exatamente a mesma calibracao do script principal (mesmo QC, mesma
-#   arvore, mesmos clados, mesmo modelo neutro ajustado uma vez sobre o MSA
-#   concatenado) - a UNICA diferenca e a chamada final ao phyloP().
+#   Testa cada intron inteiro como um unico elemento por clado, com o
+#   argumento "features" de phyloP(). Usa o mesmo QC, arvore, clados e modelo
+#   neutro do script principal. Nao usado nos resultados do manuscrito.
 # ===============================================================================
 
 library(ape)
@@ -20,7 +12,7 @@ library(dplyr)
 library(purrr)
 library(tools)
 
-base_dir   <- "/home/user/Desktop/projetos/phast_rerun"
+base_dir   <- "."
 tree_file  <- file.path(base_dir, "filtered_tree.newick")
 intron_dir <- file.path(base_dir, "introns/")
 csv_dir    <- file.path(base_dir, "csv_filtered/")
