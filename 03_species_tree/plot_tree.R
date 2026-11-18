@@ -92,6 +92,13 @@ prepare_tree <- function(tree_file) {
   tr <- read.tree(tree_file)
   stopifnot(Ntip(tr) == 18)
   tr <- root(tr, outgroup = outgroup, resolve.root = TRUE, edgelabel = TRUE)
+  if (!is.null(tr$node.label)) {
+    root_kids <- tr$edge[tr$edge[, 1] == Ntip(tr) + 1, 2] - Ntip(tr)
+    root_kids <- root_kids[root_kids > 0]
+    root_sup <- tr$node.label[root_kids]
+    root_sup <- root_sup[nzchar(root_sup)]
+    if (length(root_kids) == 2 && length(root_sup) == 1) tr$node.label[root_kids] <- root_sup
+  }
   tr <- rotateConstr(tr, constraint = rev(order_species))
   tr$tip.label <- pretty_label(tr$tip.label)
 

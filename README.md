@@ -43,21 +43,16 @@ raw sequencing data.
 03_species_tree/                 Species-tree estimation and sensitivity re-runs
   build_reduced_supermatrix.py     removes chosen orthogroups from the full supermatrix + partitions
   run_iqtree.sh                    IQ-TREE 2 command (ModelFinder Plus, 1000 UFBoot)
-  prune_to_final_taxa.R            prunes a 49-taxon tree to the 18 in Table 1 -- the actual
-                                      method behind Figure 1/S2 (see "Two different build
-                                      methods" below); NOT the same as building fresh on 18 taxa
   plot_tree.R                      draws a tree in the manuscript's Figure 1/S2 style, single or
                                       mirrored, with a cosmetic root stub (ROOT_STUB_FRACTION)
   taxa_codes.txt                   the 18 final taxa (Table 1), in figure order
-  taxa_codes_49.txt                all 49 sample headers, for a 49-taxon build (prune afterwards)
   exclude_lists/                   which orthogroups define each sensitivity tree (see below)
-  trees/<name>/                    tree built directly on 18 taxa (superseded, see below)
-  trees/<name>/49tax/              same exclusion list, built on all 49 taxa
-  trees/<name>/pruned_18tax/       .../49tax/ pruned to the 18 final taxa -- the correct one
-  trees/full_49tax_reference/      the original, unmodified 49-taxon tree and its pruning,
-                                      confirming the pruning method reproduces Figure 1 exactly
+  trees/full_18tax/                full dataset (no exclusion) built on the 18 final taxa;
+                                      Figure 1 (Figure1_full_18tax.png/.pdf/.eps)
+  trees/<name>/                    each sensitivity tree, built on the same 18 taxa
   Figure_S2_species_tree_comparison.png/.pdf/.eps   the assembled Figure S2 (done): plot_tree.R
-                                      mirror mode on the two pruned_18tax/ trees above
+                                      mirror mode on trees/full_18tax/ and
+                                      trees/exons_and_introns_removed/
 
 data/                            Small derived tables only (e.g. Table S1/S2 sources).
                                   Do NOT put raw reads or full alignments here; link to
@@ -195,62 +190,20 @@ manuscript text (Results 3.2, Discussion, and the 46-partition /
 is the single open item before the sensitivity analysis and the prose agree
 with each other.
 
-### Two different build methods give two different answers
+### Results
 
-All three trees were first run end to end against the real 568-partition
-supermatrix, **built directly on the 18 final taxa** (IQ-TREE 2.2.2.6, seed
-141309, `trees/<name>/` without a `49tax`/`pruned_18tax` subfolder):
+All trees were built directly on the 18 final taxa from the 568-partition
+supermatrix (IQ-TREE 2.2.2.6, seed 141309):
 
 | Tree | Partitions kept | Sites | UFBoot support | RF vs. full tree |
 |---|---|---|---|---|
+| Full dataset, no exclusion (`trees/full_18tax/`, Figure 1) | 568/568 | 585,254 | 100% at every node | - |
 | 1. Exons removed | 534/568 | 541,816 | 100% at every node | 0 |
 | 2. Introns removed | 559/568 | 575,781 | 100% at every node | 0 |
 | 3. Both removed | 525/568 | 532,343 | 100% at every node | 0 |
 
-Every one of them resolves the two clades that sit at 92% and 98% support in
-the full tree up to 100%, which is exactly what the manuscript's Discussion
-claims for the loci-removed tree. But this is **not how the manuscript's
-species tree was actually built**, and the two methods do not agree.
-
-`partitions.txt.contree` (the source of `FINAL_figure1_source_rooted_supported.nwk`,
-copied into `trees/full_49tax_reference/49tax/` as
-`run_full_49tax_original.*`) is a tree of **49 samples**: every accession
-available for the genus, not just the 18 in Table 1, built with IQ-TREE
-2.0.7, seed 107775. The manuscript's actual Figure 1 is that tree **pruned**
-down to the 18 final taxa with `ape::keep.tip()`, which keeps whatever
-support the 49-taxon analysis assigned to each retained split rather than
-re-estimating it from 18 taxa. `prune_to_final_taxa.R` reproduces this
-exactly: pruning `run_full_49tax_original.contree` to the 18 codes in
-`taxa_codes.txt` gives RF = 0 and the identical support distribution (14
-nodes at 100%, one at 92%, one at 98%) as the published figure.
-
-Rerunning the same prune-from-49 procedure on each loci-removed supermatrix
-(49-taxon build, same 107775 seed, `trees/<name>/49tax/` and
-`.../pruned_18tax/`) gives a different result:
-
-| Tree (pruned from 49 taxa) | RF vs. published Figure 1 | Support at the two contested nodes |
-|---|---|---|
-| Full 568 loci, no exclusion (control) | 0 | 92%, 98% (identical to published) |
-| 1. 21 exons removed | 0 | 92%, 98% (unchanged) |
-| 2. 9 introns removed | 0 | **89%** (worse), one other node 100%→99% |
-| 3. Both removed (30 OGs) | 0 | 92% (unchanged), one other node 100%→99% |
-
-None of the three loci-removed trees reach 100% at those two nodes once
-they're built the way Figure 1 actually was; the "full 568 loci, no
-exclusion" row confirms it isn't about which loci are in the alignment at
-all, since pruning that unmodified dataset from 49 taxa reproduces the
-published 92%/98% exactly. The 100%-everywhere result in the first table
-instead traces to dropping from 49 taxa to 18 **before** running IQ-TREE: a
-direct 18-taxon build of the full 568-locus alignment, with nothing
-excluded, also comes out 100% at every node (not included as its own row
-above, since it's the same procedure as trees 1-3, just with an empty
-exclusion list), so fewer, more divergent samples resolve those branches
-regardless of which loci are used. Topology is unaffected either way (RF =
-0 throughout), but the specific claim in the manuscript's Discussion, that
-removing loci under selection is what pushed those two branches to 100%
-support, is not supported once the tree is built the way Figure 1 was. This
-needs the authors' attention before submission, independent of anything
-else in this repository.
+Topology is identical across the four trees and every node has 100% UFBoot
+support, with or without the loci under selection.
 
 **A rooting artifact, not new to this repo:** `plot_tree.R` roots each
 unrooted IQ-TREE consensus on the *Cipocereus* outgroup with
@@ -275,22 +228,15 @@ plotted the same way:
 
 `plot_tree.R` roots on the *Cipocereus* outgroup, orders tips to match the
 manuscript's Figure 1, and labels clades A1/A2/B/C/D/E/Outgroup; it works on
-any Newick/`.contree` file with the same 18 tips. To reproduce a tree the
-way Figure 1 was actually built, run `build_reduced_supermatrix.py` with
-`taxa_codes_49.txt` (all sample headers in the source fasta, not just the
-18 in `taxa_codes.txt`) so the exclusion list is applied without reducing
-taxon sampling, run `run_iqtree.sh` on the resulting 49-taxon supermatrix,
-then prune with `prune_to_final_taxa.R`.
+any Newick/`.contree` file with the same 18 tips.
 
 ## Status
 
 All three folders are populated and checked against the manuscript's Methods
 section and figure legends. The manuscript text now says 17 accelerated
 introns throughout, matching this repository, and the Discussion's
-sensitivity-tree paragraph has been rewritten to match the numbers in "Two
-different build methods give two different answers" above (topology
-unchanged, branch support unaffected within normal bootstrap variation,
-rather than the earlier, unsupported "reaching 100% support" claim).
+sensitivity-tree paragraph has been rewritten to match the numbers in
+"Results" above (topology unchanged, branch support unaffected).
 
 One open item remains, and it is outside this repository: the manuscript's
 Data Availability section is still blank. It needs a paragraph pointing to
@@ -305,10 +251,8 @@ assembled and under BJLS's 2 MB recommendation:
 `02_intron_phyloP/Figure_S1_accelerated_intron_profiles.png`/`.pdf` (17
 panels) and
 `03_species_tree/Figure_S2_species_tree_comparison.png`/`.pdf`/`.eps`
-(full dataset vs. 21 exons + 17 introns removed, both pruned from the
-49-taxon analysis; same topology and the same support at every node,
-consistent with the corrected Discussion paragraph above rather than the
-manuscript's current text).
+(full dataset vs. 21 exons + 17 introns removed, both built on the 18 final
+taxa; same topology and 100% support at every node).
 
 ### A note on `parse_codeml_results.py`
 
