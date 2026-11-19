@@ -11,7 +11,7 @@ One exon has a branch-model 2Δℓ ≈ -49, an impossible value for nested model
 that signals a codeml optimisation failure; it is excluded from the branch
 panel's KDE and count (see Figure 3 legend) but not from the underlying data.
 
-Also generates Figure S3: the same density plot for the site model M7 vs. M8
+Also generates Figure S2: the same density plot for the site model M7 vs. M8
 (df=2), with each exon's rug tick coloured by significance after
 Benjamini-Hochberg correction (q < 0.05).
 
@@ -24,7 +24,7 @@ Usage
     python figure3_lrt_density.py --xlsx resultados_2026_frame_validated.xlsx \
         --site-sheet "M1a vs M2a" --branch-sheet "M0 vs Branch" \
         --out-prefix Figure3_LRT_density \
-        --m7m8-sheet "M7 vs M8" --s3-out-prefix Figure_S3_M7_M8_LRT_density
+        --m7m8-sheet "M7 vs M8" --s2-out-prefix Figure_S2_M7_M8_LRT_density
 """
 
 import argparse
@@ -126,7 +126,7 @@ def main():
     parser.add_argument("--m7m8-sheet", default="M7 vs M8")
     parser.add_argument("--p-column", default="p-value")
     parser.add_argument("--m7m8-xlim", nargs=2, type=float, default=[-2, 85])
-    parser.add_argument("--s3-out-prefix", default="Figure_S3_M7_M8_LRT_density")
+    parser.add_argument("--s2-out-prefix", default="Figure_S2_M7_M8_LRT_density")
     args = parser.parse_args()
 
     wb = openpyxl.load_workbook(args.xlsx, data_only=True)
@@ -175,8 +175,8 @@ def main():
     ax.set_xlabel('likelihood-ratio test statistic, 2Δℓ')
     fig.subplots_adjust(left=0.12, right=0.97, top=0.90, bottom=0.15)
     for ext in ('pdf', 'png'):
-        fig.savefig(f'{args.s3_out_prefix}.{ext}', dpi=600, bbox_inches='tight')
-    print(f'saved {args.s3_out_prefix}.pdf / .png')
+        fig.savefig(f'{args.s2_out_prefix}.{ext}', dpi=600, bbox_inches='tight')
+    print(f'saved {args.s2_out_prefix}.pdf / .png')
 
 
 if __name__ == '__main__':

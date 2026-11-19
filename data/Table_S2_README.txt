@@ -3,7 +3,12 @@ Table S2 -- phyloP evolutionary-rate scores for the 70 analyzed introns
 
 FILES
 -----
-Table_S2_phyloP_results.csv.gz
+Table_S2_summary_by_orthogroup.xlsx
+    Table S2. One row per orthogroup x clade (490 rows), summarizing the
+    per-site file below: number of sites, mean score, count and percentage
+    of sites reaching the conservation/acceleration threshold.
+
+Table_S2_per_site_phyloP_scores.csv.gz
     Per-site phyloP scores (LRT method, CONACC mode). One row per
     alignment position x clade x orthogroup.
     Columns:
@@ -23,12 +28,6 @@ Table_S2_phyloP_results.csv.gz
     site level; see manuscript Methods 2.3 and Results 3.2 for why a
     per-site FDR is not the criterion used; sustained blocks of
     accelerated sites are).
-
-Table_S2b_summary_by_orthogroup.xlsx
-    One row per orthogroup x clade (490 rows), summarizing the file above:
-    number of sites, mean score, count and percentage of sites reaching
-    the conservation/acceleration threshold. Useful for a quick overview
-    without loading the full per-site table.
 
 METHOD
 ------

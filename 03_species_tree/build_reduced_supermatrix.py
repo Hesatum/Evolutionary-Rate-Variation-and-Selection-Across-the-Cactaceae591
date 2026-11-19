@@ -13,7 +13,7 @@ its supplementary material:
   1. exons under positive selection removed (Table 2, 21 orthogroups)
   2. introns with sustained clade-specific acceleration removed (Table S2)
   3. both sets removed together (the tree reported in the manuscript,
-     Robinson-Foulds distance = 0 from the full tree, Figure S2)
+     Robinson-Foulds distance = 0 from the full tree, Figure S3)
 
 The full partitions.txt is expected in RAxML/IQ-TREE partition format:
     DNA, <locus_name> = <start>-<end>

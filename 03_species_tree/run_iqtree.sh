@@ -15,7 +15,7 @@
 #                    trees/exon_selection_removed/run_exon_selection_removed \
 #                    141309
 #
-# The seed used for the sensitivity re-runs behind Figure S2 was 141309;
+# The seed used for the sensitivity re-runs behind Figure S3 was 141309;
 # omit it to let IQ-TREE pick one at random.
 
 set -euo pipefail

@@ -3,7 +3,7 @@
 # plot_tree.R
 #
 # Plots the Cereus/Cipocereus phylogeny in the style of Figure 1 (single
-# tree) and Figure S2 (two trees, mirrored).
+# tree) and Figure S3 (two trees, mirrored).
 #
 # Input:  a Newick tree with the 18 tips of Table 1 (branch lengths required;
 #         UFBoot node labels optional).

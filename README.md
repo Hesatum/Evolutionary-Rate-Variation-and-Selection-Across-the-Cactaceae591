@@ -21,8 +21,8 @@ repository does not redistribute raw sequencing data.
   frame_validation_blastx.py       homology-based frame check via NCBI blastx (2.2)
   run_codeml_batch_default.py      batches codeml across loci with default .ctl settings (2.3)
   parse_codeml_results.py          LRT + Benjamini-Hochberg FDR + BEB sites (2.3)
-  figure3_lrt_density.py           Figure 3 and Figure S3 (LRT density plots)
-  Figure_S3_M7_M8_LRT_density.png/.pdf   Figure S3
+  figure3_lrt_density.py           Figure 3 and Figure S2 (LRT density plots)
+  Figure_S2_M7_M8_LRT_density.png/.pdf   Figure S2
   codeml_configs/                  example .ctl files for M0, M1a, M2a, M7, M8, Branch
 
 02_intron_phyloP/                Intron evolutionary-rate analysis (RPhast phyloP)
@@ -44,16 +44,16 @@ repository does not redistribute raw sequencing data.
   exclude_lists/                   orthogroups removed in each sensitivity tree (see below)
   trees/full_18tax/                full dataset (no exclusion); Figure 1
   trees/<name>/                    each sensitivity tree
-  Figure_S2_species_tree_comparison.png/.pdf/.eps   Figure S2: trees/full_18tax/ vs.
+  Figure_S3_species_tree_comparison.png/.pdf/.eps   Figure S3: trees/full_18tax/ vs.
                                       trees/exons_and_introns_removed/
 
 data/                            Supplementary tables
   Table_S1_codeml_results.xlsx     Table S1: site- and branch-model codeml results for the
                                       94 analyzed exons (one sheet per comparison)
   Table_S1_README.txt              column definitions for Table S1
-  Table_S2_phyloP_results.csv.gz   Table S2: per-site phyloP scores (LRT, CONACC) for the
-                                      70 analyzed introns, 515,739 rows
-  Table_S2b_summary_by_orthogroup.xlsx  the same data summarized per intron x clade (490 rows)
+  Table_S2_summary_by_orthogroup.xlsx  Table S2: phyloP scores (LRT, CONACC) for the 70
+                                      analyzed introns, summarized per intron x clade (490 rows)
+  Table_S2_per_site_phyloP_scores.csv.gz  per-site phyloP scores behind Table S2 (515,739 rows)
   Table_S2_README.txt              column definitions and thresholds for Table S2
 ```
 
@@ -102,7 +102,7 @@ data/                            Supplementary tables
   feature (one LRT per intron per clade, phyloP `features=` argument). It
   was not used for any result reported in the manuscript.
 
-## Sensitivity trees (Figure S2)
+## Sensitivity trees (Figure S3)
 
 `03_species_tree/build_reduced_supermatrix.py` removes every partition of
 the orthogroups in an exclusion list from the full supermatrix and partition
@@ -112,7 +112,7 @@ file. Three trees were estimated, one per list:
    `exclude_lists/exons_under_selection_21.csv`.
 2. **Introns with sustained clade-specific acceleration removed** (17
    orthogroups): `exclude_lists/introns_accelerated_17.csv`.
-3. **Both removed** (Figure S2):
+3. **Both removed** (Figure S3):
    `exclude_lists/exons_and_introns_combined_38.csv`.
 
 `exclude_lists/empty_none.csv` is an empty list that reproduces the full
@@ -177,9 +177,9 @@ MACSE v2, IQ-TREE 2.2.2.6 + ModelFinder Plus, PAML 4.9j (codeml), R 4.4.1
 | 2.3 Evolutionary rates in introns (phyloP/RPhast) | `02_intron_phyloP/` |
 | Figure 1 | `03_species_tree/trees/full_18tax/` |
 | Figure 2 | `02_intron_phyloP/plot_figure2_representative_introns.py` |
-| Figure 3, Figure S3 | `01_exon_dNdS/figure3_lrt_density.py` |
+| Figure 3, Figure S2 | `01_exon_dNdS/figure3_lrt_density.py` |
 | Figure S1 | `02_intron_phyloP/` |
-| Figure S2 | `03_species_tree/` |
+| Figure S3 | `03_species_tree/` |
 | Table S1, Table S2 | `data/` |
 
 ## License
